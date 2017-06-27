@@ -3,9 +3,12 @@ package com.codepath.apps.tweetter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.JsonHttpResponseHandler;
@@ -21,6 +24,7 @@ public class ComposeActivity extends AppCompatActivity {
 
     private TwitterClient client;
     private Tweet tweet;
+    final private int maxLength = 140;
 
 //    @BindView(R.id.etNewTweet) EditText etNewTweet;
 //    @BindView(R.id.btSubmitNewTweet) Button btSubmitNewTweet;
@@ -87,35 +91,24 @@ public class ComposeActivity extends AppCompatActivity {
                 });
             }
         });
+
+        final TextView tvCharacterCount = (TextView) findViewById(R.id.tvCharacterCount);
+        EditText etNewTweet = (EditText) findViewById(R.id.etNewTweet);
+        etNewTweet.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                tvCharacterCount.setText(String.valueOf(maxLength - s.length()));
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
+
         client = TwitterApp.getRestClient();
     }
-
-//    @OnClick(R.id.btSubmitNewTweet)
-//    public void submitTweet() {
-//
-//        String newTweetText = etNewTweet.getText().toString();
-//        Toast.makeText(ComposeActivity.this, "Submitting", Toast.LENGTH_LONG).show();
-//        client.sendTweet(newTweetText, new JsonHttpResponseHandler() {
-//            @Override
-//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                super.onSuccess(statusCode, headers, response);
-//                try {
-//                    // Get the tweet
-//                    tweet = Tweet.fromJSON(response);
-//                    // Make the intent
-//                    Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
-//                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-//                    setResult(RESULT_OK, i);
-//                    finish();
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//
-//            @Override
-//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                super.onFailure(statusCode, headers, responseString, throwable);
-//            }
-//        });
-//    }
 }
