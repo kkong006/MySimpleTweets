@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.models;
 
 import org.json.JSONException;
 import org.json.JSONObject;
