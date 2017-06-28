@@ -146,15 +146,17 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("TwitterClient", response.toString());
                 // Iterate through the JSON array
                 // For each entry, deserialize the JSON object
-                for(int i = 0; i < response.length(); i++) {
+
                     try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-                        tweets.add(tweet);
-                        tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                        for(int i = 0; i < response.length(); i++) {
+                            Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+                            tweets.add(tweet);
+                            tweetAdapter.notifyItemInserted(tweets.size() - 1);
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                }
+
                 // Convert each object to a Tweet model
                 // Add that Tweet model to our data source
             }
@@ -222,8 +224,6 @@ public class TimelineActivity extends AppCompatActivity {
         // Return to finish
         return super.onPrepareOptionsMenu(menu);
     }
-
-
 
     public void showProgressBar() {
         // Show progress item

@@ -1,6 +1,7 @@
 package com.codepath.apps.tweetter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
+
+import org.parceler.Parcels;
 
 import java.util.List;
 
@@ -21,8 +24,8 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
-    private List<Tweet> mTweets;
-    Context context;
+    static List<Tweet> mTweets;
+    static Context context;
 
     // Pass in the Tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -51,12 +54,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvUsername.setText(tweet.user.name);
         holder.tvBody.setText(tweet.body);
         holder.tvScreenName.setText("@" + tweet.user.screenName + " · " + TimeFormatter.getTimeDifference(tweet.createdAt));
+        holder.tvReplyCount.setText("");
+        holder.tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
+        holder.tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
 
         // Load the profile image
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
                 .into(holder.ivProfileImage);
+
+        // Remove the dividing line on the last row
+        if(position == getItemCount() - 1) {
+            holder.vDivider.setVisibility(View.INVISIBLE);
+        }
     }
 
     @Override
@@ -77,20 +88,44 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     }
 
     // Create ViewHolder class
-    public static class ViewHolder extends RecyclerView.ViewHolder {
+    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;
         public TextView tvScreenName;
+        public TextView tvReplyCount;
+        public TextView tvRetweetCount;
+        public TextView tvFavoriteCount;
+        public View vDivider;
 
         public ViewHolder(View itemView) {
             super(itemView);
-
             // Perform findViewById lookups
             ivProfileImage = (ImageView) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
             tvBody = (TextView) itemView.findViewById(R.id.tvBody);
             tvScreenName = (TextView) itemView.findViewById(R.id.tvScreenName);
+            tvReplyCount = (TextView) itemView.findViewById(R.id.tvReplyCount);
+            tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
+            tvFavoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+            vDivider = (View) itemView.findViewById(R.id.vDivider);
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            // Get the item position
+            int position = getAdapterPosition();
+            // Make sure the position is valid
+            if(position != RecyclerView.NO_POSITION) {
+                // Get the tweet at the location
+                Tweet tweet = mTweets.get(position);
+                // Create an intent to the TweetDetailsActivity
+                Intent i = new Intent(context, TweetDetailsActivity.class);
+                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                // Start the activity
+                context.startActivity(i);
+            }
         }
     }
 }

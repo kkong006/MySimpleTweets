@@ -14,8 +14,12 @@ public class Tweet {
     // List out attributes
     public String body;
     public long uid; // Database ID for the tweet
+    public int retweetCount;
+    public int favoriteCount;
     public User user;
     public String createdAt;
+    public boolean favorited;
+    public boolean retweeted;
 
     public Tweet() {}
     public Tweet(JSONObject jsonObject) throws JSONException {
@@ -23,18 +27,23 @@ public class Tweet {
         this.uid = jsonObject.getLong("id");
         this.createdAt = jsonObject.getString("created_at");
         this.user = User.fromJSON(jsonObject.getJSONObject("user"));
+        this.favorited = jsonObject.getBoolean("favorited");
+        this.retweeted = jsonObject.getBoolean("retweeted");
+        try {
+            this.retweetCount = jsonObject.getInt("retweet_count");
+        } catch (JSONException e) {
+            this.retweetCount = 0;
+        }
+        try {
+            this.favoriteCount = jsonObject.getInt("favourites_count");
+        } catch (JSONException e) {
+            this.favoriteCount = 0;
+        }
     }
 
     // Deserialize the JSON; the exceptions will be thrown back up to the caller
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
-        Tweet tweet = new Tweet();
-
-        // Extract the values from JSON
-        tweet.body = jsonObject.getString("text");
-        tweet.uid = jsonObject.getLong("id");
-        tweet.createdAt = jsonObject.getString("created_at");
-        tweet.user = User.fromJSON(jsonObject.getJSONObject("user"));
-        return tweet;
+        return new Tweet(jsonObject);
     }
 
     public String getBody() {

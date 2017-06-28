@@ -34,8 +34,6 @@ public class ComposeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_compose);
-//        getSupportActionBar().setBackgroundDrawable(
-//                new ColorDrawable(Color.parseColor("#00aced")));
 
         Button btSubmitNewTweet = (Button) findViewById(R.id.btSubmitNewTweet);
         btSubmitNewTweet.setOnClickListener(new View.OnClickListener() {
