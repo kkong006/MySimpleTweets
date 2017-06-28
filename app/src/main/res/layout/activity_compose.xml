@@ -18,18 +18,21 @@
         android:id="@+id/tvCharacterCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_margin="5dp"
         android:layout_toLeftOf="@+id/btSubmitNewTweet"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/etNewTweet"
         android:text="140"
-        android:maxLength="140" />
+        android:maxLength="140"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
 
     <Button
         android:id="@+id/btSubmitNewTweet"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@+id/etNewTweet"
         android:textColorHint="#00aced"
         android:text="Tweet" />
 
