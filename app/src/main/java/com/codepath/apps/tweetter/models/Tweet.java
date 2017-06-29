@@ -27,15 +27,23 @@ public class Tweet {
         this.uid = jsonObject.getLong("id");
         this.createdAt = jsonObject.getString("created_at");
         this.user = User.fromJSON(jsonObject.getJSONObject("user"));
-        this.favorited = jsonObject.getBoolean("favorited");
-        this.retweeted = jsonObject.getBoolean("retweeted");
+        try {
+            this.favorited = jsonObject.getBoolean("favorited");
+        } catch(JSONException e) {
+            this.favorited = false;
+        }
+        try {
+            this.retweeted = jsonObject.getBoolean("retweeted");
+        } catch(JSONException e) {
+            this.retweeted = false;
+        }
         try {
             this.retweetCount = jsonObject.getInt("retweet_count");
         } catch (JSONException e) {
             this.retweetCount = 0;
         }
         try {
-            this.favoriteCount = jsonObject.getInt("favourites_count");
+            this.favoriteCount = jsonObject.getInt("favorite_count");
         } catch (JSONException e) {
             this.favoriteCount = 0;
         }

@@ -178,12 +178,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                     if(position != RecyclerView.NO_POSITION) {
                         final Tweet tweet = mTweets.get(position);
                         if(tweet.favorited) {
-                            Toast.makeText(context, "UN-Favoriting...", Toast.LENGTH_SHORT).show();
                             client.unfavoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     super.onSuccess(statusCode, headers, response);
-                                    Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
                                     try {
                                         int oldFavoriteCount = tweet.favoriteCount;
                                         Tweet tweet = Tweet.fromJSON(response);
@@ -226,12 +224,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                             });
 
                         } else {
-                            Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
                             client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
                                 @Override
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     super.onSuccess(statusCode, headers, response);
-                                    Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
                                     try {
                                         int oldFavoriteCount = tweet.favoriteCount;
                                         Tweet tweet = Tweet.fromJSON(response);
@@ -287,32 +283,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             int position = getAdapterPosition();
             // Make sure the position is valid
             if(position != RecyclerView.NO_POSITION) {
-//                switch(v.getId()) {
-//                    case(R.id.ibMessage):
-//                        Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
-//
-//                        break;
-//                    case(R.id.ibRetweet):
-//                        Toast.makeText(context, "Retweeting...", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case(R.id.ibFavorite):
-//                        Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case(R.id.ibDirectMessage):
-//                        Toast.makeText(context, "DMing...", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    case(R.id.llButtonRow):
-//                        Toast.makeText(context, "Button Row...", Toast.LENGTH_SHORT).show();
-//                        break;
-//                    default:
-                        // Get the tweet at the location
-                        Tweet tweet = mTweets.get(position);
-                        // Create an intent to the TweetDetailsActivity
-                        Intent i = new Intent(context, TweetDetailsActivity.class);
-                        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                        // Start the activity
-                        context.startActivity(i);
-//                }
+                // Get the tweet at the location
+                Tweet tweet = mTweets.get(position);
+                // Create an intent to the TweetDetailsActivity
+                Intent i = new Intent(context, TweetDetailsActivity.class);
+                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                // Start the activity
+                context.startActivity(i);
             }
         }
 
