@@ -13,11 +13,16 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.loopj.android.http.JsonHttpResponseHandler;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.parceler.Parcels;
 
 import java.util.List;
 
+import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 /**
@@ -28,6 +33,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
     static List<Tweet> mTweets;
     static Context context;
+    static TwitterClient client;
 
     // Pass in the Tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
@@ -58,7 +64,31 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         holder.tvScreenName.setText("@" + tweet.user.screenName + " · " + TimeFormatter.getTimeDifference(tweet.createdAt));
         holder.tvReplyCount.setText("");
         holder.tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
-        holder.tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+
+        // Set the favorited status
+        if(tweet.favorited) {
+            holder.ibFavorite.setImageResource(R.drawable.ic_unfavorite);
+        } else {
+            holder.ibFavorite.setImageResource(R.drawable.ic_favorite);
+        }
+
+        // If for some reason the favorite count is not working, set it to 1
+        if(tweet.favorited && tweet.favoriteCount <= 0) {
+            tweet.favoriteCount = 1;
+        }
+
+        // Set the favorite count
+        if(tweet.favoriteCount > 0) {
+            holder.tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+        } else {
+            holder.tvFavoriteCount.setText("");
+        }
+
+
+        // TODO - Add retweeted status
+        if(tweet.retweeted) {
+
+        }
 
         // Load the profile image
         Glide.with(context)
@@ -122,6 +152,9 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
             itemView.setOnClickListener(this);
 
+//            final TwitterClient client;
+            client = TwitterApp.getRestClient();
+
             ibMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -140,7 +173,103 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ibFavorite.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
+
+                    final int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        final Tweet tweet = mTweets.get(position);
+                        if(tweet.favorited) {
+                            Toast.makeText(context, "UN-Favoriting...", Toast.LENGTH_SHORT).show();
+                            client.unfavoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    super.onSuccess(statusCode, headers, response);
+                                    Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        int oldFavoriteCount = tweet.favoriteCount;
+                                        Tweet tweet = Tweet.fromJSON(response);
+                                        if(oldFavoriteCount > 0) {
+                                            tweet.favoriteCount = oldFavoriteCount - 1;
+                                        } else {
+                                            tweet.favoriteCount = 0;
+                                        }
+                                        mTweets.set(position, tweet);
+                                        setFavorited(tweet);
+                                        setFavoriteCount(tweet);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+//                                @Override
+//                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                                    super.onSuccess(statusCode, headers, response);
+//                                    Toast.makeText(context, "Success2!", Toast.LENGTH_SHORT).show();
+//                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Unable to favorite", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Unable to favorite", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    super.onFailure(statusCode, headers, responseString, throwable);
+                                    Toast.makeText(context, "Unable to favorite", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+
+                        } else {
+                            Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
+                            client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    super.onSuccess(statusCode, headers, response);
+                                    Toast.makeText(context, "Success!", Toast.LENGTH_SHORT).show();
+                                    try {
+                                        int oldFavoriteCount = tweet.favoriteCount;
+                                        Tweet tweet = Tweet.fromJSON(response);
+                                        tweet.favoriteCount = oldFavoriteCount + 1;
+                                        mTweets.set(position, tweet);
+                                        setFavorited(tweet);
+                                        setFavoriteCount(tweet);
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+
+//                                @Override
+//                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+//                                    super.onSuccess(statusCode, headers, response);
+//                                    Toast.makeText(context, "Success2!", Toast.LENGTH_SHORT).show();
+//                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Unable to unfavorite", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Unable to unfavorite", Toast.LENGTH_SHORT).show();
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                                    super.onFailure(statusCode, headers, responseString, throwable);
+                                    Toast.makeText(context, "Unable to unfavorite", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
                 }
             });
 
@@ -184,6 +313,25 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                         // Start the activity
                         context.startActivity(i);
 //                }
+            }
+        }
+
+        public void setFavorited(Tweet tweet) {
+            // Set the tweet favorited status
+            if(tweet.favorited) {
+                ibFavorite.setImageResource(R.drawable.ic_unfavorite);
+            } else {
+                ibFavorite.setImageResource(R.drawable.ic_favorite);
+            }
+        }
+
+        public void setFavoriteCount(Tweet tweet) {
+            // Set the number of favorited tweets
+            Toast.makeText(context, "Tweet count is " + tweet.favoriteCount, Toast.LENGTH_SHORT).show();
+            if(tweet.favoriteCount > 0) {
+                tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
+            } else {
+                tvFavoriteCount.setText("");
             }
         }
     }

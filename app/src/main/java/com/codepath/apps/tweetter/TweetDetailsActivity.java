@@ -16,6 +16,7 @@ import butterknife.OnClick;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
+import static com.codepath.apps.tweetter.R.id.tvFavoriteCount;
 import static com.codepath.apps.tweetter.TweetAdapter.context;
 
 public class TweetDetailsActivity extends AppCompatActivity {
@@ -31,7 +32,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvTweetTextDetails)
     TextView tvTweetBody;
     @BindView(R.id.tvNumRetweetsDetails) TextView tvNumRetweets;
-    @BindView(R.id.tvNumLikesDetails) TextView tvNumLikes;
+    @BindView(R.id.tvNumLikesDetails) TextView tvNumFavorites;
     @BindView(ibFavoriteDetails) ImageView ibFavorited;
     @BindView(R.id.ibRetweetDetails) ImageView ibRetweeted;
 
@@ -57,8 +58,19 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
 
-        tvNumRetweets.setText(String.valueOf(tweet.retweetCount));
-        tvNumLikes.setText(String.valueOf(tweet.favoriteCount));
+        // Set the number of retweets
+        if(tweet.retweetCount > 0) {
+            tvNumRetweets.setText(String.valueOf(tweet.retweetCount));
+        } else {
+            tvNumRetweets.setText("");
+        }
+
+        // Set the number of likes
+        if(tweet.favoriteCount > 0) {
+            tvNumFavorites.setText(String.valueOf(tweet.favoriteCount));
+        } else {
+            tvNumFavorites.setText("");
+        }
 
         setFavorited();
         setRetweeted();
