@@ -6,8 +6,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
@@ -96,6 +98,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvReplyCount;
         public TextView tvRetweetCount;
         public TextView tvFavoriteCount;
+        public ImageButton ibMessage;
+        public ImageButton ibRetweet;
+        public ImageButton ibFavorite;
+        public ImageButton ibDirectMessage;
         public View vDivider;
 
         public ViewHolder(View itemView) {
@@ -108,8 +114,42 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvReplyCount = (TextView) itemView.findViewById(R.id.tvReplyCount);
             tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
             tvFavoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+            ibMessage = (ImageButton) itemView.findViewById(R.id.ibMessage);
+            ibRetweet = (ImageButton) itemView.findViewById(R.id.ibRetweet);
+            ibFavorite = (ImageButton) itemView.findViewById(R.id.ibFavorite);
+            ibDirectMessage = (ImageButton) itemView.findViewById(R.id.ibDirectMessage);
             vDivider = (View) itemView.findViewById(R.id.vDivider);
+
             itemView.setOnClickListener(this);
+
+            ibMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
+
+                }
+            });
+
+            ibRetweet.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Retweeting...", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ibFavorite.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
+                }
+            });
+
+            ibDirectMessage.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Toast.makeText(context, "DMing...", Toast.LENGTH_SHORT).show();
+                }
+            });
         }
 
         @Override
@@ -118,13 +158,32 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             int position = getAdapterPosition();
             // Make sure the position is valid
             if(position != RecyclerView.NO_POSITION) {
-                // Get the tweet at the location
-                Tweet tweet = mTweets.get(position);
-                // Create an intent to the TweetDetailsActivity
-                Intent i = new Intent(context, TweetDetailsActivity.class);
-                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                // Start the activity
-                context.startActivity(i);
+//                switch(v.getId()) {
+//                    case(R.id.ibMessage):
+//                        Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
+//
+//                        break;
+//                    case(R.id.ibRetweet):
+//                        Toast.makeText(context, "Retweeting...", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case(R.id.ibFavorite):
+//                        Toast.makeText(context, "Favoriting...", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case(R.id.ibDirectMessage):
+//                        Toast.makeText(context, "DMing...", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    case(R.id.llButtonRow):
+//                        Toast.makeText(context, "Button Row...", Toast.LENGTH_SHORT).show();
+//                        break;
+//                    default:
+                        // Get the tweet at the location
+                        Tweet tweet = mTweets.get(position);
+                        // Create an intent to the TweetDetailsActivity
+                        Intent i = new Intent(context, TweetDetailsActivity.class);
+                        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                        // Start the activity
+                        context.startActivity(i);
+//                }
             }
         }
     }
