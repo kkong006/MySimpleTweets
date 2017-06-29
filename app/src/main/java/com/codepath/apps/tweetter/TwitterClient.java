@@ -1,5 +1,6 @@
 package com.codepath.apps.tweetter;
 
+import android.app.DownloadManager;
 import android.content.Context;
 
 import com.codepath.oauth.OAuthBaseClient;
@@ -77,6 +78,20 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void unfavoriteTweet(long id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("favorites/destroy.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void retweet(long id, AsyncHttpResponseHandler handler) {
+		String apiUrl = getApiUrl("statuses/retweet.json");
+		RequestParams params = new RequestParams();
+		params.put("id", id);
+		client.post(apiUrl, params, handler);
+	}
+
+	public void unRetweet(long id, AsyncHttpResponseHandler handler) {
+	String apiUrl = getApiUrl("statuses/unretweet.json");
 		RequestParams params = new RequestParams();
 		params.put("id", id);
 		client.post(apiUrl, params, handler);

@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -167,6 +168,61 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Retweeting...", Toast.LENGTH_SHORT).show();
+                    final int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        final Tweet tweet = mTweets.get(position);
+                        if(tweet.retweeted) {
+                            // Unretweet the tweet
+                            client.unRetweet(tweet.uid, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    super.onSuccess(statusCode, headers, response);
+
+                                    Tweet tweet = null;
+                                    try {
+                                        tweet = Tweet.fromJSON(response);
+                                        mTweets.set(position, tweet);
+                                        setRetweeted(tweet);
+                                        Toast.makeText(context, "Success 1! "+ tweet.retweetCount, Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        } else {
+                            // Retweet the tweet
+                            client.retweet(tweet.uid, new JsonHttpResponseHandler() {
+                                @Override
+                                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                                    super.onSuccess(statusCode, headers, response);
+
+                                    Tweet tweet = null;
+                                    try {
+                                        tweet = Tweet.fromJSON(response);
+                                        mTweets.set(position, tweet);
+                                        setRetweeted(tweet);
+                                        Toast.makeText(context, "Success 2! " + tweet.retweetCount, Toast.LENGTH_SHORT).show();
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+
+                                @Override
+                                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                                    super.onFailure(statusCode, headers, throwable, errorResponse);
+                                    Toast.makeText(context, "Failed!", Toast.LENGTH_SHORT).show();
+                                }
+                            });
+                        }
+                    }
                 }
             });
 
@@ -183,26 +239,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     super.onSuccess(statusCode, headers, response);
                                     try {
-                                        int oldFavoriteCount = tweet.favoriteCount;
                                         Tweet tweet = Tweet.fromJSON(response);
-                                        if(oldFavoriteCount > 0) {
-                                            tweet.favoriteCount = oldFavoriteCount - 1;
-                                        } else {
-                                            tweet.favoriteCount = 0;
-                                        }
                                         mTweets.set(position, tweet);
                                         setFavorited(tweet);
-                                        setFavoriteCount(tweet);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
-
-//                                @Override
-//                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                                    super.onSuccess(statusCode, headers, response);
-//                                    Toast.makeText(context, "Success2!", Toast.LENGTH_SHORT).show();
-//                                }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -229,22 +272,13 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                                     super.onSuccess(statusCode, headers, response);
                                     try {
-                                        int oldFavoriteCount = tweet.favoriteCount;
                                         Tweet tweet = Tweet.fromJSON(response);
-                                        tweet.favoriteCount = oldFavoriteCount + 1;
                                         mTweets.set(position, tweet);
                                         setFavorited(tweet);
-                                        setFavoriteCount(tweet);
                                     } catch (JSONException e) {
                                         e.printStackTrace();
                                     }
                                 }
-
-//                                @Override
-//                                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                                    super.onSuccess(statusCode, headers, response);
-//                                    Toast.makeText(context, "Success2!", Toast.LENGTH_SHORT).show();
-//                                }
 
                                 @Override
                                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
@@ -300,15 +334,26 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             } else {
                 ibFavorite.setImageResource(R.drawable.ic_favorite);
             }
-        }
-
-        public void setFavoriteCount(Tweet tweet) {
             // Set the number of favorited tweets
-            Toast.makeText(context, "Tweet count is " + tweet.favoriteCount, Toast.LENGTH_SHORT).show();
             if(tweet.favoriteCount > 0) {
                 tvFavoriteCount.setText(String.valueOf(tweet.favoriteCount));
             } else {
                 tvFavoriteCount.setText("");
+            }
+        }
+
+        public void setRetweeted(Tweet tweet) {
+            // Set the tweet retweeted status
+            if(tweet.retweeted) {
+                ibRetweet.setImageResource(R.drawable.ic_unretweet);
+            } else {
+                ibFavorite.setImageResource(R.drawable.ic_retweet);
+            }
+            // Set the number of retweeted tweets
+            if(tweet.retweetCount > 0) {
+                tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
+            } else {
+                tvRetweetCount.setText("");
             }
         }
     }
