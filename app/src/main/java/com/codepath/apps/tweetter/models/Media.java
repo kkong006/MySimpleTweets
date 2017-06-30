@@ -19,7 +19,7 @@ public class Media {
     public Media() { }
     public Media(JSONArray media) throws JSONException {
         try {
-            mediaUrl = media.getJSONObject(0).getString("media_url");
+            mediaUrl = media.getJSONObject(0).getString("media_url_https");
             Log.e("MEDIA", mediaUrl);
         } catch (JSONException e) {
             e.printStackTrace();

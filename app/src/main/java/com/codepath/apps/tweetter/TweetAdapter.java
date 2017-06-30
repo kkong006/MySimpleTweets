@@ -190,6 +190,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 public void onClick(View v) {
                     Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
 
+
+
                 }
             });
 
@@ -382,7 +384,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 Intent i = new Intent(context, TweetDetailsActivity.class);
                 i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                 i.putExtra(TWEET_POSITION_KEY, position);
-                Toast.makeText(context, "Position: " + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "Adapter: " + position, Toast.LENGTH_SHORT).show();
                 // Start the activity
                 ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
             }

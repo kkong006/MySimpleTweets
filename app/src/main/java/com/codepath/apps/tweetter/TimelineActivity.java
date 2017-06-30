@@ -25,6 +25,8 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
+import static com.codepath.apps.tweetter.TweetAdapter.context;
+
 public class TimelineActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE_COMPOSE = 20;
@@ -216,12 +218,11 @@ public class TimelineActivity extends AppCompatActivity {
             rvTweets.scrollToPosition(0);
         } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            int position = getIntent().getIntExtra(TWEET_POSITION_KEY, 0);
+            int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
             tweets.set(position, newTweet);
             tweetAdapter.notifyItemChanged(position);
             rvTweets.scrollToPosition(position);
-
-            Toast.makeText(this, "Position: " + position, Toast.LENGTH_SHORT).show();
+            Toast.makeText(context, "Timeline: " + position, Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Unable to submit tweet", Toast.LENGTH_SHORT).show();
         }

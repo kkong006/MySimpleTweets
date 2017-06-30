@@ -58,7 +58,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
         position = getIntent().getIntExtra(TWEET_POSITION_KEY, 0);
-        Toast.makeText(this, "Position: " + position, Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Details: " + position, Toast.LENGTH_SHORT).show();
 
         // Populate the views according to this data
         tvUserName.setText(tweet.user.name);
@@ -283,11 +283,11 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Toast.makeText(context, "Back pressed", Toast.LENGTH_SHORT).show();
+        Toast.makeText(context, "Back pressed: " + position, Toast.LENGTH_SHORT).show();
         Intent i = new Intent();
         i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
         i.putExtra(TWEET_POSITION_KEY, position);
         setResult(RESULT_OK, i);
-        super.onBackPressed();
+        finish();
     }
 }
