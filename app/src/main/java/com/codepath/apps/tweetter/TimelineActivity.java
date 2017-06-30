@@ -227,7 +227,6 @@ public class TimelineActivity extends AppCompatActivity {
             Toast.makeText(context, "Timeline: " + position, Toast.LENGTH_SHORT).show();
         } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_REPLY) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
             tweets.add(0, newTweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);

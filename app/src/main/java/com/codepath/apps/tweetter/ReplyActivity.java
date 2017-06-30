@@ -21,13 +21,10 @@ import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
-
 public class ReplyActivity extends AppCompatActivity {
 
     private TwitterClient client;
     private Tweet tweet;
-    private int position;
     final private int maxLength = 140;
 
     @Override
@@ -37,7 +34,6 @@ public class ReplyActivity extends AppCompatActivity {
 
         // Unwrap the intent
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
-        position = getIntent().getIntExtra(TWEET_POSITION_KEY, 0);
 
         Button btSubmitReply = (Button) findViewById(R.id.btSubmitNewTweetReply);
         btSubmitReply.setOnClickListener(new View.OnClickListener() {
@@ -55,9 +51,8 @@ public class ReplyActivity extends AppCompatActivity {
                             tweet = Tweet.fromJSON(response);
                             Intent i = new Intent(ReplyActivity.this, TimelineActivity.class);
                             i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                            i.putExtra(TWEET_POSITION_KEY, position);
                             setResult(RESULT_OK, i);
-                            finish();
+                            startActivity(i);
                         } catch (JSONException e) {
                             e.printStackTrace();
                             Toast.makeText(ReplyActivity.this, "Failed to submit retweet", Toast.LENGTH_SHORT).show();

@@ -11,29 +11,60 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="5dp"
-        android:hint="Type your tweet"
+        android:hint="Enter your tweet"
         android:inputType="textMultiLine" />
 
-    <TextView
-        android:id="@+id/tvCharacterCount"
-        android:layout_width="wrap_content"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_toLeftOf="@+id/btSubmitNewTweet"
-        android:layout_below="@+id/etNewTweet"
-        android:text="140"
-        android:maxLength="140"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"
-        android:layout_marginTop="5dp"
-        android:layout_marginBottom="5dp" />
+        android:orientation="horizontal"
+        android:layout_below="@id/etNewTweet">
 
-    <Button
-        android:id="@+id/btSubmitNewTweet"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentRight="true"
-        android:layout_below="@+id/etNewTweet"
-        android:textColorHint="#00aced"
-        android:text="Tweet" />
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_image_upload"
+            android:backgroundTint="@android:color/transparent"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_gif"
+            android:backgroundTint="@android:color/transparent"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_poll"
+            android:backgroundTint="@android:color/transparent"/>
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_location"
+            android:backgroundTint="@android:color/transparent"/>
+
+        <TextView
+            android:id="@+id/tvCharacterCount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="140"
+            android:maxLength="140"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="5dp" />
+
+        <Button
+            android:id="@+id/btSubmitNewTweet"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/etNewTweet"
+            android:textColor="@android:color/white"
+            android:background="@drawable/shape_tweet_button"
+            android:textAllCaps="false"
+            android:text="Tweet" />
+
+    </LinearLayout>
 
 </RelativeLayout>

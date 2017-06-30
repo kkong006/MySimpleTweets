@@ -23,6 +23,7 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
+import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 import static com.codepath.apps.tweetter.TweetAdapter.context;
 
@@ -109,6 +110,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
         } else {
             tvNumRetweets.setText("");
         }
+    }
+
+    @OnClick(R.id.ibMessageDetails)
+    public void putReply() {
+        Intent i = new Intent(context, ReplyActivity.class);
+        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+        ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_REPLY);
     }
 
     @OnClick(R.id.ibRetweetDetails)
