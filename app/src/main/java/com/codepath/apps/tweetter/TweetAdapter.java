@@ -28,6 +28,7 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
+import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 
 /**
@@ -189,9 +190,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
-
-
-
+                    final int position = getAdapterPosition();
+                    if(position != RecyclerView.NO_POSITION) {
+                        final Tweet tweet = mTweets.get(position);
+                        Intent i = new Intent(context, ReplyActivity.class);
+                        i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+                        i.putExtra(TWEET_POSITION_KEY, position);
+                        ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_REPLY);
+                    }
                 }
             });
 

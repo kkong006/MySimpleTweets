@@ -31,11 +31,13 @@ public class TimelineActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE_COMPOSE = 20;
     public static final int REQUEST_CODE_DETAILS = 30;
+    public static final int REQUEST_CODE_REPLY = 40;
 
 
     public static final String RESULT_CODE_DETAILS = "resultCodeDetails";
 //    public static final String TWEET_DETAILS_ACTIVITY = "tweetDetailsActivity";
     public static final String TWEET_POSITION_KEY = "tweetPositionKey";
+
 
     private SwipeRefreshLayout swipeContainer;
     private TwitterClient client;
@@ -212,8 +214,8 @@ public class TimelineActivity extends AppCompatActivity {
 //        super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
-            Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            tweets.add(0, tweet);
+            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            tweets.add(0, newTweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
         } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
@@ -223,6 +225,12 @@ public class TimelineActivity extends AppCompatActivity {
             tweetAdapter.notifyItemChanged(position);
             rvTweets.scrollToPosition(position);
             Toast.makeText(context, "Timeline: " + position, Toast.LENGTH_SHORT).show();
+        } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_REPLY) {
+            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
+            tweets.add(0, newTweet);
+            tweetAdapter.notifyItemInserted(0);
+            rvTweets.scrollToPosition(0);
         } else {
             Toast.makeText(this, "Unable to submit tweet", Toast.LENGTH_SHORT).show();
         }

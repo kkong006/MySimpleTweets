@@ -1,9 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.tweetter.ReplyActivity">
+    tools:context="com.codepath.apps.tweetter.ComposeActivity">
 
-</android.support.constraint.ConstraintLayout>
+    <TextView
+        android:id="@+id/tvReplyingTo"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:minLines="1"
+        android:maxLines="1"/>
+
+    <EditText
+        android:id="@+id/etNewTweetReply"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:layout_below="@+id/tvReplyingTo"
+        android:hint="Enter your retweet"
+        android:inputType="textMultiLine" />
+
+    <TextView
+        android:id="@+id/tvCharacterCountReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toLeftOf="@+id/btSubmitNewTweetReply"
+        android:layout_below="@+id/etNewTweetReply"
+        android:text="140"
+        android:maxLength="140"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp" />
+
+    <Button
+        android:id="@+id/btSubmitNewTweetReply"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/etNewTweetReply"
+        android:textColorHint="#00aced"
+        android:text="Retweet" />
+
+</RelativeLayout>
