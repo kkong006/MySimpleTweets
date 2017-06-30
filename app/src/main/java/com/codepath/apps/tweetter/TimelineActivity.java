@@ -28,9 +28,10 @@ import cz.msebera.android.httpclient.Header;
 public class TimelineActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE_COMPOSE = 20;
+    public static final int REQUEST_CODE_DETAILS = 30;
 
 
-    public static final int RESULT_CODE_DETAILS = 30;
+    public static final String RESULT_CODE_DETAILS = "resultCodeDetails";
 //    public static final String TWEET_DETAILS_ACTIVITY = "tweetDetailsActivity";
     public static final String TWEET_POSITION_KEY = "tweetPositionKey";
 
@@ -117,8 +118,6 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
             }
-
-
         });
     }
 
@@ -208,14 +207,14 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
 
         if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
             Tweet tweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             tweets.add(0, tweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
-        } else if(resultCode == RESULT_CODE_DETAILS || requestCode == RESULT_CODE_DETAILS) {
+        } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             int position = getIntent().getIntExtra(TWEET_POSITION_KEY, 0);
             tweets.set(position, newTweet);

@@ -23,7 +23,6 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
-import static com.codepath.apps.tweetter.TimelineActivity.RESULT_CODE_DETAILS;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 import static com.codepath.apps.tweetter.TweetAdapter.context;
 
@@ -277,13 +276,11 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        super.onBackPressed();
         Toast.makeText(context, "Back pressed", Toast.LENGTH_SHORT).show();
         Intent i = new Intent();
         i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
         i.putExtra(TWEET_POSITION_KEY, position);
-        setResult(RESULT_CODE_DETAILS, i);
-
+        setResult(RESULT_OK, i);
         super.onBackPressed();
     }
 }

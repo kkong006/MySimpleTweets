@@ -2,10 +2,12 @@ package com.codepath.apps.tweetter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
+import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 
 /**
@@ -36,17 +39,29 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     static List<Tweet> mTweets;
     static Context context;
     static TwitterClient client;
+    LayoutInflater inflater;
 
     // Pass in the Tweets array in the constructor
     public TweetAdapter(List<Tweet> tweets) {
         mTweets = tweets;
     }
 
+    // TODO: move intent from holder to TimelineActivity
+    // Constructor for onclicklistener
+    public TweetAdapter(Context context, AdapterView.OnItemClickListener listener, List<Tweet> tweets) {
+        inflater = LayoutInflater.from(context);
+        this.mTweets = tweets;
+//        this.onItemClickListener = listener;
+    }
+
     // For each row, inflate layout and cache references into ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         context = parent.getContext();
-        LayoutInflater inflater = LayoutInflater.from(context);
+
+        if(inflater == null) {
+            inflater = LayoutInflater.from(context);
+        }
 
         View tweetView = inflater.inflate(R.layout.item_tweet, parent, false);
         ViewHolder viewHolder = new ViewHolder(tweetView);
@@ -362,7 +377,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 i.putExtra(TWEET_POSITION_KEY, position);
                 Toast.makeText(context, "Position: " + position, Toast.LENGTH_SHORT).show();
                 // Start the activity
-                context.startActivity(i);
+                ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
             }
         }
 
