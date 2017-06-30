@@ -53,11 +53,17 @@
         android:ellipsize="end"
         android:text="tweet tweet"/>
 
+    <ImageView
+        android:id="@+id/ivMediaImage"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvBody"/>
+
     <LinearLayout
         android:id="@+id/llButtonRow"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvBody"
+        android:layout_below="@+id/ivMediaImage"
         android:layout_centerHorizontal="true"
         android:orientation="horizontal">
 

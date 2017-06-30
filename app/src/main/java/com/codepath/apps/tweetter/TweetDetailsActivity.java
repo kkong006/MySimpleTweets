@@ -42,6 +42,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
     @BindView(R.id.tvNumLikesDetails) TextView tvNumFavorites;
     @BindView(ibFavoriteDetails) ImageView ibFavorited;
     @BindView(R.id.ibRetweetDetails) ImageView ibRetweeted;
+    @BindView(R.id.ivMediaImageDetails) ImageView ivMediaImage;
 
     Tweet tweet;
     private TwitterClient client;
@@ -69,6 +70,12 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
+
+        // Load the media image
+        Glide.with(context)
+                .load(tweet.media.getMediaUrl())
+                .bitmapTransform(new RoundedCornersTransformation(this, 5, 0))
+                .into(ivMediaImage);
 
         setFavorited();
         setRetweeted();

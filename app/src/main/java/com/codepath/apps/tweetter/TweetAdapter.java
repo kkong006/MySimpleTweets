@@ -119,6 +119,11 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
                 .into(holder.ivProfileImage);
 
+        Glide.with(context)
+                .load(tweet.media.getMediaUrl())
+                .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
+                .into(holder.ivMediaImage);
+
 //        // Remove the dividing line on the last row
 //        if(position == getItemCount() - 1) {
 //            holder.vDivider.setVisibility(View.INVISIBLE);
@@ -151,6 +156,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         public TextView tvReplyCount;
         public TextView tvRetweetCount;
         public TextView tvFavoriteCount;
+        public ImageView ivMediaImage;
         public ImageButton ibMessage;
         public ImageButton ibRetweet;
         public ImageButton ibFavorite;
@@ -167,6 +173,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             tvReplyCount = (TextView) itemView.findViewById(R.id.tvReplyCount);
             tvRetweetCount = (TextView) itemView.findViewById(R.id.tvRetweetCount);
             tvFavoriteCount = (TextView) itemView.findViewById(R.id.tvFavoriteCount);
+            ivMediaImage = (ImageView) itemView.findViewById(R.id.ivMediaImage);
             ibMessage = (ImageButton) itemView.findViewById(R.id.ibMessage);
             ibRetweet = (ImageButton) itemView.findViewById(R.id.ibRetweet);
             ibFavorite = (ImageButton) itemView.findViewById(R.id.ibFavorite);
