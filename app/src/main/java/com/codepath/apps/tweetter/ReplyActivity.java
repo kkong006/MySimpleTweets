@@ -41,7 +41,6 @@ public class ReplyActivity extends AppCompatActivity {
             public void onClick(View v) {
                 EditText etNewReply = (EditText) findViewById(R.id.etNewTweetReply);
                 String newReplyText = "@" + tweet.user.screenName + " " +  etNewReply.getText().toString();
-                Toast.makeText(getApplicationContext(), newReplyText, Toast.LENGTH_SHORT).show();
                 // Send the request and parameters to the endpoint
                 client.replyTweet(newReplyText, tweet.uid, new JsonHttpResponseHandler() {
                     @Override

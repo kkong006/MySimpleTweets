@@ -25,8 +25,6 @@ import java.util.ArrayList;
 
 import cz.msebera.android.httpclient.Header;
 
-import static com.codepath.apps.tweetter.TweetAdapter.context;
-
 public class TimelineActivity extends AppCompatActivity {
 
     private final int REQUEST_CODE_COMPOSE = 20;
@@ -224,7 +222,6 @@ public class TimelineActivity extends AppCompatActivity {
             tweets.set(position, newTweet);
             tweetAdapter.notifyItemChanged(position);
             rvTweets.scrollToPosition(position);
-            Toast.makeText(context, "Timeline: " + position, Toast.LENGTH_SHORT).show();
         } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_REPLY) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             tweets.add(0, newTweet);

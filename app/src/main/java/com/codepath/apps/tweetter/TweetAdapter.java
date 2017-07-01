@@ -189,7 +189,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ibMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Messaging...", Toast.LENGTH_SHORT).show();
                     final int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION) {
                         final Tweet tweet = mTweets.get(position);
@@ -203,7 +202,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             ibRetweet.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(context, "Retweeting...", Toast.LENGTH_SHORT).show();
                     final int position = getAdapterPosition();
                     if(position != RecyclerView.NO_POSITION) {
                         final Tweet tweet = mTweets.get(position);
@@ -389,7 +387,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 Intent i = new Intent(context, TweetDetailsActivity.class);
                 i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                 i.putExtra(TWEET_POSITION_KEY, position);
-                Toast.makeText(context, "Adapter: " + position, Toast.LENGTH_SHORT).show();
                 // Start the activity
                 ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
             }

@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.tweetter.TweetDetailsActivity">
+    tools:context="com.codepath.apps.tweetter.TweetDetailsActivity"
+    android:layout_margin="5dp">
 
     <ImageView
         android:id="@+id/ivProfileImageDetails"
@@ -54,7 +55,8 @@
         android:id="@+id/ivMediaImageDetails"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvTweetTextDetails"/>
+        android:layout_below="@+id/tvTweetTextDetails"
+        android:layout_margin="5dp"/>
 
     <TextView
         android:id="@+id/tvTimeStampDetails"
@@ -70,7 +72,7 @@
         android:layout_height="1dp"
         android:layout_below="@+id/tvTimeStampDetails"
         android:background="@android:color/darker_gray"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 
@@ -120,9 +122,7 @@
         android:layout_height="1dp"
         android:layout_below="@+id/llRetweetsLikesDetails"
         android:background="@android:color/darker_gray"
-        android:layout_marginTop="5dp"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="5dp"/>
+        android:layout_margin="5dp"/>
 
     <LinearLayout
         android:id="@+id/llButtonRowDetails"
@@ -173,9 +173,9 @@
         android:id="@+id/vDividerDetails3"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        android:layout_below="@+id/tvTimeStampDetails"
+        android:layout_below="@+id/llButtonRowDetails"
         android:background="@android:color/darker_gray"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="5dp"
         android:layout_marginLeft="5dp"
         android:layout_marginRight="5dp"/>
 

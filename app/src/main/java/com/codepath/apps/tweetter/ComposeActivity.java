@@ -56,7 +56,6 @@ public class ComposeActivity extends AppCompatActivity {
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-                        Toast.makeText(ComposeActivity.this, "Submitted tweet", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
@@ -74,13 +73,11 @@ public class ComposeActivity extends AppCompatActivity {
                             e.printStackTrace();
                             Toast.makeText(ComposeActivity.this, "Failed to submit tweet", Toast.LENGTH_SHORT).show();
                         }
-                        Toast.makeText(ComposeActivity.this, "Submitted tweet", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
                     public void onSuccess(int statusCode, Header[] headers, String responseString) {
                         super.onSuccess(statusCode, headers, responseString);
-                        Toast.makeText(ComposeActivity.this, "Submitted tweet", Toast.LENGTH_LONG).show();
                     }
 
                     @Override
