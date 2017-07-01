@@ -27,9 +27,9 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
-import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
+import static com.codepath.apps.tweetter.TimelineActivity2.REQUEST_CODE_DETAILS;
+import static com.codepath.apps.tweetter.TimelineActivity2.REQUEST_CODE_REPLY;
+import static com.codepath.apps.tweetter.TimelineActivity2.TWEET_POSITION_KEY;
 
 /**
  * Created by kkong on 6/26/17.
@@ -47,7 +47,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         mTweets = tweets;
     }
 
-    // TODO: move intent from holder to TimelineActivity
+    // TODO: move intent from holder to TimelineActivity2
     // Constructor for onclicklistener
     public TweetAdapter(Context context, AdapterView.OnItemClickListener listener, List<Tweet> tweets) {
         inflater = LayoutInflater.from(context);

@@ -23,8 +23,8 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
-import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
+import static com.codepath.apps.tweetter.TimelineActivity2.REQUEST_CODE_REPLY;
+import static com.codepath.apps.tweetter.TimelineActivity2.TWEET_POSITION_KEY;
 import static com.codepath.apps.tweetter.TweetAdapter.context;
 
 public class TweetDetailsActivity extends AppCompatActivity {

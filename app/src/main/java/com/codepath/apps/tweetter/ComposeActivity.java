@@ -49,7 +49,7 @@ public class ComposeActivity extends AppCompatActivity {
                             // Get the tweet
                             tweet = Tweet.fromJSON(response);
                             // Make the intent
-                            Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
+                            Intent i = new Intent(ComposeActivity.this, TimelineActivity2.class);
                             i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                             setResult(RESULT_OK, i);
                             finish();
@@ -65,7 +65,7 @@ public class ComposeActivity extends AppCompatActivity {
                         try {
                             for(int i = 0;  i < response.length(); i++) {
                                 tweet = Tweet.fromJSON(response.getJSONObject(i));
-                                Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
+                                Intent intent = new Intent(ComposeActivity.this, TimelineActivity2.class);
                                 intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                                 setResult(RESULT_OK, intent);
                                 finish();

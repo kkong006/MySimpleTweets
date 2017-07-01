@@ -49,7 +49,7 @@ public class ReplyActivity extends AppCompatActivity {
                         super.onSuccess(statusCode, headers, response);
                         try {
                             tweet = Tweet.fromJSON(response);
-                            Intent i = new Intent(ReplyActivity.this, TimelineActivity.class);
+                            Intent i = new Intent(ReplyActivity.this, TimelineActivity2.class);
                             i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
                             setResult(RESULT_OK, i);
                             startActivity(i);
