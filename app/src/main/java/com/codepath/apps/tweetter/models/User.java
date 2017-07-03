@@ -11,29 +11,57 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
 
-    // List the attributes
-    public String name;
-    public long uid;
-    public String screenName;
-    public String profileImageUrl;
+    /* Data Members */
+    private long uid;
+    private String name;
+    private String screenName;
+    private String profileImageUrl;
 
+    /* Constructors */
     public User() {}
+
+    // Deserialize the JSON
     public User(JSONObject object) throws JSONException {
-        this.name = object.getString("name");
         this.uid = object.getLong("id");
+        this.name = object.getString("name");
         this.screenName = object.getString("screen_name");
         this.profileImageUrl = object.getString("profile_image_url");
     }
 
-    // Deserialize the JSON
-    public static User fromJSON(JSONObject json) throws JSONException {
-        User user = new User();
+    public static User fromJSON(JSONObject object) throws JSONException {
+        return new User(object);
+    }
 
-        // Extract and fill values
-        user.name = json.getString("name");
-        user.uid = json.getLong("id");
-        user.screenName = json.getString("screen_name");
-        user.profileImageUrl = json.getString("profile_image_url");
-        return user;
+    /* Getters/Setters */
+    public long getUid() {
+        return uid;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getScreenName() {
+        return screenName;
+    }
+
+    public String getProfileImageUrl() {
+        return profileImageUrl;
+    }
+
+    public void setUid(long uid) {
+        this.uid = uid;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setScreenName(String screenName) {
+        this.screenName = screenName;
+    }
+
+    public void setProfileImageUrl(String profileImageUrl) {
+        this.profileImageUrl = profileImageUrl;
     }
 }

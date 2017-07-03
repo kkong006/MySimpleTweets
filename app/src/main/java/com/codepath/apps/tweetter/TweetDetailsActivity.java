@@ -29,16 +29,11 @@ import static com.codepath.apps.tweetter.TweetAdapter.context;
 
 public class TweetDetailsActivity extends AppCompatActivity {
 
-    @BindView(R.id.ivProfileImageDetails)
-    ImageView ivProfileImage;
-    @BindView(R.id.tvUserNameDetails)
-    TextView tvUserName;
-    @BindView(R.id.tvScreenNameDetails)
-    TextView tvScreenName;
-    @BindView(R.id.tvTimeStampDetails)
-    TextView tvTimeStamp;
-    @BindView(R.id.tvTweetTextDetails)
-    TextView tvTweetBody;
+    @BindView(R.id.ivProfileImageDetails) ImageView ivProfileImage;
+    @BindView(R.id.tvUserNameDetails) TextView tvUserName;
+    @BindView(R.id.tvScreenNameDetails) TextView tvScreenName;
+    @BindView(R.id.tvTimeStampDetails) TextView tvTimeStamp;
+    @BindView(R.id.tvTweetTextDetails) TextView tvTweetBody;
     @BindView(R.id.tvNumRetweetsDetails) TextView tvNumRetweets;
     @BindView(R.id.tvNumLikesDetails) TextView tvNumFavorites;
     @BindView(ibFavoriteDetails) ImageView ibFavorited;
@@ -61,19 +56,20 @@ public class TweetDetailsActivity extends AppCompatActivity {
         position = getIntent().getIntExtra(TWEET_POSITION_KEY, 0);
 
         // Populate the views according to this data
-        tvUserName.setText(tweet.user.name);
-        tvTweetBody.setText(tweet.body);
-        tvScreenName.setText("@" + tweet.user.screenName);
+        tvUserName.setText(tweet.getUser().getName());
+        tvTweetBody.setText(tweet.getBody());
+        tvScreenName.setText("@" + tweet.getUser().getScreenName());
         tvTimeStamp.setText(TimeFormatter.getTimeStamp(tweet.getCreatedAt()));
+
         // Load the profile image
         Glide.with(context)
-                .load(tweet.user.profileImageUrl)
+                .load(tweet.getUser().getProfileImageUrl())
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
 
         // Load the media image
         Glide.with(context)
-                .load(tweet.media.getMediaUrl())
+                .load(tweet.getMedia().getMediaUrl())
                 .bitmapTransform(new RoundedCornersTransformation(this, 5, 0))
                 .into(ivMediaImage);
 
@@ -81,34 +77,200 @@ public class TweetDetailsActivity extends AppCompatActivity {
         setRetweeted();
     }
 
-    public void setFavorited() {
+    private void setFavorited() {
         // Set the tweet favorited status
-        if(tweet.favorited) {
+        if(tweet.isFavorited()) {
             ibFavorited.setImageResource(R.drawable.ic_unfavorite);
         } else {
             ibFavorited.setImageResource(R.drawable.ic_favorite);
         }
         // Set the number of favorites
-        if(tweet.favoriteCount > 0) {
-            tvNumFavorites.setText(String.valueOf(tweet.favoriteCount));
+        if(tweet.getFavoriteCount() > 0) {
+            tvNumFavorites.setText(String.valueOf(tweet.getFavoriteCount()));
         } else {
             tvNumFavorites.setText("");
         }
     }
 
-    public void setRetweeted() {
+    private void setRetweeted() {
         // Set the retweeted status
-        if(tweet.retweeted) {
+        if(tweet.isRetweeted()) {
             ibRetweeted.setImageResource(R.drawable.ic_unretweet);
         } else {
             ibRetweeted.setImageResource(R.drawable.ic_retweet);
         }
         // Set the number of retweets
-        if(tweet.retweetCount > 0) {
-            tvNumRetweets.setText(String.valueOf(tweet.retweetCount));
+        if(tweet.getRetweetCount() > 0) {
+            tvNumRetweets.setText(String.valueOf(tweet.getRetweetCount()));
         } else {
             tvNumRetweets.setText("");
         }
+    }
+
+    private void unRetweetTweet() {
+        client.unRetweet(tweet.getUid(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int oldRetweetCount = tweet.getRetweetCount();
+                    tweet = new Tweet(response);
+                    if(tweet.isRetweeted()) {
+                        tweet.setRetweeted(false);
+                    }
+                    if(tweet.getRetweetCount() > oldRetweetCount - 1) {
+                        tweet.setRetweetCount(oldRetweetCount - 1);
+                    }
+                    setRetweeted();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void retweetTweet() {
+        client.retweet(tweet.getUid(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int oldRetweetCount = tweet.getRetweetCount();
+                    tweet = new Tweet(response);
+                    if(!tweet.isRetweeted()) {
+                        tweet.setRetweeted(true);
+                    }
+                    if(tweet.getRetweetCount() < oldRetweetCount + 1) {
+                        tweet.setRetweetCount(oldRetweetCount + 1);
+                    }
+                    setRetweeted();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+                }
+
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void unfavoriteTweet() {
+        client.unfavoriteTweet(tweet.getUid(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int oldFavoriteCount = tweet.getFavoriteCount();
+                    tweet = new Tweet(response);
+                    if(tweet.isFavorited()) {
+                        tweet.setFavorited(false);
+                    }
+                    if(tweet.getFavoriteCount() > oldFavoriteCount - 1) {
+                        tweet.setFavoriteCount(oldFavoriteCount - 1);
+                    }
+                    setFavorited();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Failed to unfavorite tweet", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to unfavorite tweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to unfavorite tweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to unfavorite tweet", Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void favoriteTweet() {
+        client.favoriteTweet(tweet.getUid(), new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                super.onSuccess(statusCode, headers, response);
+                try {
+                    int oldFavoriteCount = tweet.getFavoriteCount();
+                    tweet = new Tweet(response);
+                    if(!tweet.isFavorited()) {
+                        tweet.setFavorited(true);
+                    }
+                    if(tweet.getFavoriteCount() < oldFavoriteCount + 1) {
+                        tweet.setFavoriteCount(oldFavoriteCount + 1);
+                    }
+                    setFavorited();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                throwable.printStackTrace();
+                Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @OnClick(R.id.ibMessageDetails)
@@ -120,174 +282,23 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.ibRetweetDetails)
     public void putRetweet() {
-        if(tweet.retweeted) {
-            client.unRetweet(tweet.uid, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        int oldRetweetCount = tweet.retweetCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(tweet.retweeted) {
-                            tweet.retweeted = false;
-                        }
-                        if(tweet.retweetCount > oldRetweetCount - 1) {
-                            tweet.retweetCount = oldRetweetCount - 1;
-                        }
-                        setRetweeted();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
-                }
-            });
+        if(tweet.isRetweeted()) {
+            unRetweetTweet();
         } else {
-            client.retweet(tweet.uid, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        int oldRetweetCount = tweet.retweetCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(!tweet.retweeted) {
-                            tweet.retweeted = true;
-                        }
-                        if(tweet.retweetCount < oldRetweetCount + 1) {
-                            tweet.retweetCount = oldRetweetCount + 1;
-                        }
-                        setRetweeted();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
-                }
-            });
+            retweetTweet();
         }
     }
 
     @OnClick(R.id.ibFavoriteDetails)
     public void putFavorite() {
-        if(tweet.favorited) {
-            client.unfavoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        int oldFavoriteCount = tweet.favoriteCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(tweet.favorited) {
-                            tweet.favorited = false;
-                        }
-                        if(tweet.favoriteCount > oldFavoriteCount - 1) {
-                            tweet.favoriteCount = oldFavoriteCount - 1;
-                        }
-                        setFavorited();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-                
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-
-
-            });
-        // Change the icon
+        if(tweet.isFavorited()) {
+            unfavoriteTweet();
         } else {
-            // Favorite the tweet
-            client.favoriteTweet(tweet.uid, new JsonHttpResponseHandler() {
-
-                @Override
-                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                    super.onSuccess(statusCode, headers, response);
-                    try {
-                        int oldFavoriteCount = tweet.favoriteCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(!tweet.favorited) {
-                            tweet.favorited = true;
-                        }
-                        if(tweet.favoriteCount < oldFavoriteCount + 1) {
-                            tweet.favoriteCount = oldFavoriteCount + 1;
-                        }
-                        setFavorited();
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-                    super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-
-                @Override
-                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                    super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
-                }
-            });
-
+            favoriteTweet();
         }
     }
 
+    // On back pressed, return to the the timeline with the updated tweet
     @Override
     public void onBackPressed() {
         Intent i = new Intent();

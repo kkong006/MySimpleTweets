@@ -23,48 +23,48 @@ import org.parceler.Parcels;
 
 import java.util.ArrayList;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import cz.msebera.android.httpclient.Header;
 
 public class TimelineActivity extends AppCompatActivity {
 
+    @BindView(R.id.rvTweets) RecyclerView rvTweets;
+    @BindView(R.id.swipeContainer) SwipeRefreshLayout swipeContainer;
+
     private final int REQUEST_CODE_COMPOSE = 20;
     public static final int REQUEST_CODE_DETAILS = 30;
     public static final int REQUEST_CODE_REPLY = 40;
-
-
-    public static final String RESULT_CODE_DETAILS = "resultCodeDetails";
-//    public static final String TWEET_DETAILS_ACTIVITY = "tweetDetailsActivity";
     public static final String TWEET_POSITION_KEY = "tweetPositionKey";
 
-
-    private SwipeRefreshLayout swipeContainer;
     private TwitterClient client;
-
-    MenuItem miActionProgressItem;
-    TweetAdapter tweetAdapter;
-    ArrayList<Tweet> tweets;
-    RecyclerView rvTweets;
+    private MenuItem miActionProgressItem;
+    private TweetAdapter tweetAdapter;
+    private ArrayList<Tweet> tweets;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+        ButterKnife.bind(this);
 
-        client = TwitterApp.getRestClient();
+//        client = TwitterApp.getRestClient();
 
-        // Find the RecyclerView
-        rvTweets = (RecyclerView) findViewById(R.id.rvTweets);
         // Init the arraylist (data source)
         tweets = new ArrayList<>();
+
         // Construct the adapter from this datasource
         tweetAdapter = new TweetAdapter(tweets);
+
         // RecyclerView setup (layout manager, use adapter)
         rvTweets.setLayoutManager(new LinearLayoutManager((this)));
+
         // Set the adapter
         rvTweets.setAdapter(tweetAdapter);
 
-        // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) findViewById(R.id.swipeContainer);
+        // Populate the timeline
+//        populateTimeline();
+
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -81,6 +81,16 @@ public class TimelineActivity extends AppCompatActivity {
                 android.R.color.holo_red_light);
     }
 
+    public void showProgressBar() {
+        // Show progress item
+        miActionProgressItem.setVisible(true);
+    }
+
+    public void hideProgressBar() {
+        // Hide progress item
+        miActionProgressItem.setVisible(false);
+    }
+
     public void fetchTimelineAsync(int page) {
         // Send the network request to fetch the updated data
         // `client` here is an instance of Android Async HTTP
@@ -93,7 +103,7 @@ public class TimelineActivity extends AppCompatActivity {
                 tweetAdapter.clear();
                 for(int i = 0; i < response.length(); i++) {
                     try {
-                        Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+                        Tweet tweet = new Tweet(response.getJSONObject(i));
                         tweets.add(tweet);
                         tweetAdapter.notifyItemInserted(tweets.size() - 1);
                     } catch (JSONException e) {
@@ -123,13 +133,6 @@ public class TimelineActivity extends AppCompatActivity {
         });
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return true;
-    }
-
     private void populateTimeline() {
         showProgressBar();
 
@@ -140,7 +143,7 @@ public class TimelineActivity extends AppCompatActivity {
                 Log.d("TwitterClient", response.toString());
                 // Notify the adapter that we've added an item
                 try {
-                    Tweet tweet = Tweet.fromJSON(response);
+                    Tweet tweet = new Tweet(response);
                     tweets.add(tweet);
                     tweetAdapter.notifyItemInserted(tweets.size() - 1);
 
@@ -158,7 +161,7 @@ public class TimelineActivity extends AppCompatActivity {
 
                     try {
                         for(int i = 0; i < response.length(); i++) {
-                            Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+                            Tweet tweet = new Tweet(response.getJSONObject(i));
                             tweets.add(tweet);
                             tweetAdapter.notifyItemInserted(tweets.size() - 1);
                         }
@@ -209,49 +212,45 @@ public class TimelineActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-
-        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
+        // Compose or Reply activities
+        if (resultCode == RESULT_OK && (requestCode == REQUEST_CODE_COMPOSE || requestCode == REQUEST_CODE_REPLY)) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             tweets.add(0, newTweet);
             tweetAdapter.notifyItemInserted(0);
             rvTweets.scrollToPosition(0);
+        // Details activity
         } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
             tweets.set(position, newTweet);
             tweetAdapter.notifyItemChanged(position);
             rvTweets.scrollToPosition(position);
-        } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_REPLY) {
-            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
-            tweets.add(0, newTweet);
-            tweetAdapter.notifyItemInserted(0);
-            rvTweets.scrollToPosition(0);
         } else {
             Toast.makeText(this, "Unable to submit tweet", Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
+
+    @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+
         // Store instance of the menu item containing progress
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
+
         // Extract the action-view from the menu item
         ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+
         // Initialize the client and pull the data
         client = TwitterApp.getRestClient();
         populateTimeline();
+
         // Return to finish
         return super.onPrepareOptionsMenu(menu);
-    }
-
-    public void showProgressBar() {
-        // Show progress item
-        miActionProgressItem.setVisible(true);
-    }
-
-    public void hideProgressBar() {
-        // Hide progress item
-        miActionProgressItem.setVisible(false);
     }
 }

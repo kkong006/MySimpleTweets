@@ -180,28 +180,3 @@
         android:layout_marginRight="5dp"/>
 
 </RelativeLayout>
-
-<!--<TextView-->
-<!--android:id="@+id/tvBodyDetails"-->
-<!--android:layout_width="wrap_content"-->
-<!--android:layout_height="wrap_content"-->
-<!--android:layout_marginRight="5dp"-->
-<!--android:layout_below="@+id/tvUserNameDetails"-->
-<!--android:layout_marginLeft="5dp"-->
-<!--android:layout_marginBottom="5dp"-->
-<!--android:layout_toEndOf="@+id/ivProfileImageDetails"-->
-<!--android:minLines="1"-->
-<!--android:maxLines="2"-->
-<!--android:ellipsize="end"-->
-<!--android:text="tweet tweet"/>-->
-
-
-<!--<View-->
-<!--android:id="@+id/vDividerDetail"-->
-<!--android:layout_width="match_parent"-->
-<!--android:layout_height="1dp"-->
-<!--android:layout_below="@+id/tvTimeStampDetails"-->
-<!--android:background="@android:color/darker_gray"-->
-<!--android:layout_marginTop="15dp"-->
-<!--android:layout_marginLeft="5dp"-->
-<!--android:layout_marginRight="5dp"/>-->

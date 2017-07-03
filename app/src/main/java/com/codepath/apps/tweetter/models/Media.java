@@ -1,7 +1,5 @@
 package com.codepath.apps.tweetter.models;
 
-import android.util.Log;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.parceler.Parcel;
@@ -12,21 +10,27 @@ import org.parceler.Parcel;
 
 @Parcel
 public class Media {
-//    private int id;
-//    private String idStr;
+
+    /* Data Members */
     private String mediaUrl;
 
+    /* Constructors */
     public Media() { }
+
     public Media(JSONArray media) throws JSONException {
-        try {
-            mediaUrl = media.getJSONObject(0).getString("media_url_https");
-            Log.e("MEDIA", mediaUrl);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+        mediaUrl = media.getJSONObject(0).getString("media_url_https");
     }
 
+    public static Media fromJSON(JSONArray media) throws JSONException {
+        return new Media(media);
+    }
+
+    /* Getters/Setters */
     public String getMediaUrl() {
         return mediaUrl;
+    }
+
+    public void setMediaUrl(String mediaUrl) {
+        this.mediaUrl = mediaUrl;
     }
 }
