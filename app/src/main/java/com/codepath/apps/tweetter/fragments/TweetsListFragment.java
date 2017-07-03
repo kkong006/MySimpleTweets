@@ -27,8 +27,6 @@ public class TweetsListFragment extends Fragment {
     TweetAdapter tweetAdapter;
     ArrayList<Tweet> tweets;
     RecyclerView rvTweets;
-
-    HomeTimelineFragment frag;
     
     // Inflation happens inside onCreateView
     @Nullable

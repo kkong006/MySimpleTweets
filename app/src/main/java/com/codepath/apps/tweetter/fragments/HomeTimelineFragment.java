@@ -3,6 +3,7 @@ package com.codepath.apps.tweetter.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetter.TwitterApp;
 import com.codepath.apps.tweetter.TwitterClient;
@@ -20,7 +21,7 @@ import cz.msebera.android.httpclient.Header;
 // Code from timeline activity
 public class HomeTimelineFragment extends TweetsListFragment {
 
-    private TwitterClient client;
+    TwitterClient client;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -30,7 +31,7 @@ public class HomeTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline() {
-
+        Toast.makeText(getContext(), "Populating timeline", Toast.LENGTH_SHORT).show();
         client.getHomeTimeline(0, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {

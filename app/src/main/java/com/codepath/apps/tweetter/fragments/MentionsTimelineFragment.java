@@ -3,6 +3,7 @@ package com.codepath.apps.tweetter.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetter.TwitterApp;
 import com.codepath.apps.tweetter.TwitterClient;
@@ -29,8 +30,8 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline() {
-
-        client.getMentionsTimeline(0, new JsonHttpResponseHandler() {
+        Toast.makeText(getContext(), "Populating mentions", Toast.LENGTH_SHORT).show();
+        client.getMentionsTimeline(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());

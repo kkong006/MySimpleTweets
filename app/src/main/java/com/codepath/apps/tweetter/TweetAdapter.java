@@ -37,9 +37,9 @@ import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
-    static List<Tweet> mTweets;
+    List<Tweet> mTweets;
     static Context context;
-    static TwitterClient client;
+    TwitterClient client;
     LayoutInflater inflater;
 
     // Pass in the Tweets array in the constructor
@@ -149,7 +149,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     }
 
     // Create ViewHolder class
-    public static class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public ImageView ivProfileImage;
         public TextView tvUsername;
         public TextView tvBody;

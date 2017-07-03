@@ -2,23 +2,17 @@ package com.codepath.apps.tweetter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ProgressBar;
 
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
-import com.loopj.android.http.JsonHttpResponseHandler;
-
-import org.json.JSONArray;
-import org.json.JSONObject;
-
-import cz.msebera.android.httpclient.Header;
-
-import static com.codepath.apps.tweetter.TweetAdapter.client;
+import com.codepath.apps.tweetter.fragments.TweetsPagerAdapter;
 
 public class TimelineActivity extends AppCompatActivity {
 
@@ -48,7 +42,17 @@ public class TimelineActivity extends AppCompatActivity {
 
 //        client = TwitterApp.getRestClient();
 
-        fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+//        fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
+
+        // Get the view pager
+        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+
+        // Set the adapter for the pager
+        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+
+        // Setup the TabLayout to use the view pager
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
+        tabLayout.setupWithViewPager(vpPager);
 
 //        client = TwitterApp.getRestClient();
 //        populateTimeline();
@@ -130,69 +134,69 @@ public class TimelineActivity extends AppCompatActivity {
         return true;
     }
 
-    private void populateTimeline() {
-//        showProgressBar();
-
-        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                hideProgressBar();
-                Log.d("TwitterClient", response.toString());
-                // Notify the adapter that we've added an item
-//                try {
-//                    Tweet tweet = Tweet.fromJSON(response);
-//                    tweets.add(tweet);
-//                    tweetAdapter.notifyItemInserted(tweets.size() - 1);
+//    private void populateTimeline() {
+////        showProgressBar();
 //
-//                } catch (JSONException e) {
-//                    e.printStackTrace();
-//                }
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                hideProgressBar();
-                Log.d("TwitterClient", response.toString());
-                fragmentTweetsList.addItems(response);
-                // Iterate through the JSON array
-                // For each entry, deserialize the JSON object
-
-//                    try {
-//                        for(int i = 0; i < response.length(); i++) {
-//                            Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
-//                            tweets.add(tweet);
-//                            tweetAdapter.notifyItemInserted(tweets.size() - 1);
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-
-                // Convert each object to a Tweet model
-                // Add that Tweet model to our data source
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                hideProgressBar();
-                Log.d("TwitterClient", responseString);
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                hideProgressBar();
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-
-            @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                hideProgressBar();
-                Log.d("TwitterClient", errorResponse.toString());
-                throwable.printStackTrace();
-            }
-        });
-    }
+//        client.getHomeTimeline(0, new JsonHttpResponseHandler() {
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+////                hideProgressBar();
+//                Log.d("TwitterClient", response.toString());
+//                // Notify the adapter that we've added an item
+////                try {
+////                    Tweet tweet = Tweet.fromJSON(response);
+////                    tweets.add(tweet);
+////                    tweetAdapter.notifyItemInserted(tweets.size() - 1);
+////
+////                } catch (JSONException e) {
+////                    e.printStackTrace();
+////                }
+//            }
+//
+//            @Override
+//            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+////                hideProgressBar();
+//                Log.d("TwitterClient", response.toString());
+//                fragmentTweetsList.addItems(response);
+//                // Iterate through the JSON array
+//                // For each entry, deserialize the JSON object
+//
+////                    try {
+////                        for(int i = 0; i < response.length(); i++) {
+////                            Tweet tweet = Tweet.fromJSON(response.getJSONObject(i));
+////                            tweets.add(tweet);
+////                            tweetAdapter.notifyItemInserted(tweets.size() - 1);
+////                        }
+////                    } catch (JSONException e) {
+////                        e.printStackTrace();
+////                    }
+//
+//                // Convert each object to a Tweet model
+//                // Add that Tweet model to our data source
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+////                hideProgressBar();
+//                Log.d("TwitterClient", responseString);
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+////                hideProgressBar();
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//
+//            @Override
+//            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+////                hideProgressBar();
+//                Log.d("TwitterClient", errorResponse.toString());
+//                throwable.printStackTrace();
+//            }
+//        });
+//    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
@@ -254,5 +258,11 @@ public class TimelineActivity extends AppCompatActivity {
     public void hideProgressBar() {
         // Hide progress item
         miActionProgressItem.setVisible(false);
+    }
+
+    public void onProfileView(MenuItem item) {
+        // Launch the profile view
+        Intent i = new Intent(this, ProfileActivity.class);
+        startActivity(i);
     }
 }

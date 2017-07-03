@@ -18,4 +18,11 @@
         app:actionLayout="@layout/action_view_progress" >
     </item>
 
+    <item
+        android:id="@+id/miProfile"
+        android:icon="@drawable/ic_person_white_24dp"
+        android:title="Profile"
+        app:showAsAction="ifRoom"
+        android:onClick="onProfileView" >
+    </item>
 </menu>
