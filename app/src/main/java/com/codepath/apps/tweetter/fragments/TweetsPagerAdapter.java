@@ -4,7 +4,6 @@ import android.content.Context;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.widget.Toast;
 
 /**
  * Created by kkong on 7/3/17.
@@ -30,13 +29,10 @@ public class TweetsPagerAdapter extends FragmentPagerAdapter {
     @Override
     public Fragment getItem(int position) {
         if(position == 0) {
-            Toast.makeText(context, "Position is 0", Toast.LENGTH_SHORT).show();
             return new HomeTimelineFragment();
         } else if (position == 1) {
-            Toast.makeText(context, "Position is 1", Toast.LENGTH_SHORT).show();
             return new MentionsTimelineFragment();
         } else {
-            Toast.makeText(context, "Position is NULL", Toast.LENGTH_SHORT).show();
             return null;
         }
     }

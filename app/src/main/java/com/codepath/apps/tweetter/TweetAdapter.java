@@ -27,9 +27,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
 import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
-import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 
 /**
  * Created by kkong on 6/26/17.
@@ -41,10 +39,17 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
     static Context context;
     TwitterClient client;
     LayoutInflater inflater;
+    private TweetAdapterListener mListener;
+
+    // Desfine an interface required by the ViewHolder
+    public interface TweetAdapterListener {
+        public void onItemSelected(View view, int position);
+    }
 
     // Pass in the Tweets array in the constructor
-    public TweetAdapter(List<Tweet> tweets) {
+    public TweetAdapter(List<Tweet> tweets, TweetAdapterListener listener) {
         mTweets = tweets;
+        mListener = listener;
     }
 
     // TODO: move intent from holder to TimelineActivity
@@ -185,6 +190,14 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
 //            final TwitterClient client;
             client = TwitterApp.getRestClient();
+
+//            // Handle row click event
+//            itemView.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//
+//                }
+//            });
 
             ibMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -378,18 +391,24 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         @Override
         public void onClick(View v) {
             // Get the item position
-            int position = getAdapterPosition();
-            // Make sure the position is valid
-            if(position != RecyclerView.NO_POSITION) {
-                // Get the tweet at the location
-                Tweet tweet = mTweets.get(position);
-                // Create an intent to the TweetDetailsActivity
-                Intent i = new Intent(context, TweetDetailsActivity.class);
-                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-                i.putExtra(TWEET_POSITION_KEY, position);
-                // Start the activity
-                ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
+
+            if(mListener != null) {
+                // Get the position of the row element
+                int position = getAdapterPosition();
+                // Fire the listener callback
+                mListener.onItemSelected(v, position);
             }
+//            // Make sure the position is valid
+//            if(position != RecyclerView.NO_POSITION) {
+//                // Get the tweet at the location
+//                Tweet tweet = mTweets.get(position);
+//                // Create an intent to the TweetDetailsActivity
+//                Intent i = new Intent(context, TweetDetailsActivity.class);
+//                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+//                i.putExtra(TWEET_POSITION_KEY, position);
+//                // Start the activity
+//                ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
+//            }
         }
 
         public void setFavorited(Tweet tweet) {

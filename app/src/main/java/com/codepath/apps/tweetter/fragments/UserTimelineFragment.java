@@ -3,6 +3,7 @@ package com.codepath.apps.tweetter.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetter.TwitterApp;
 import com.codepath.apps.tweetter.TwitterClient;
@@ -17,9 +18,17 @@ import cz.msebera.android.httpclient.Header;
  * Created by kkong on 7/3/17.
  */
 
-public class MentionsTimelineFragment extends TweetsListFragment {
+public class UserTimelineFragment extends TweetsListFragment {
 
     TwitterClient client;
+
+    public static UserTimelineFragment newInstance(String screenName) {
+        UserTimelineFragment userTimelineFragment = new UserTimelineFragment();
+        Bundle args = new Bundle();
+        args.putString("screen_name", screenName);
+        userTimelineFragment.setArguments(args);
+        return userTimelineFragment;
+    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -29,7 +38,10 @@ public class MentionsTimelineFragment extends TweetsListFragment {
     }
 
     private void populateTimeline() {
-        client.getMentionsTimeline(new JsonHttpResponseHandler() {
+        // Comes from the activity
+        String screenName = getArguments().getString("screen_name");
+        Toast.makeText(getContext(), "Populating timeline", Toast.LENGTH_SHORT).show();
+        client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
