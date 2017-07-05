@@ -8,15 +8,17 @@ import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
-import android.widget.Toast;
 
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 import com.codepath.apps.tweetter.fragments.TweetsPagerAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
+
+import org.parceler.Parcels;
 
 public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
 
@@ -58,7 +60,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fabNewTweet);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -215,9 +217,12 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle presses on the action bar items
         switch(item.getItemId()) {
-            case R.id.itCompose:
-                Intent i = new Intent(this, ComposeActivity.class);
-                startActivityForResult(i, REQUEST_CODE_COMPOSE);
+            case R.id.miProfile:
+                // Launch the profile view
+                Intent i = new Intent(this, ProfileActivity.class);
+                startActivity(i);
+//                Intent i = new Intent(this, ComposeActivity.class);
+//                startActivityForResult(i, REQUEST_CODE_COMPOSE);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
@@ -226,7 +231,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
 //    @Override
 //    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-////        super.onActivityResult(requestCode, resultCode, data);
+//        super.onActivityResult(requestCode, resultCode, data);
 //
 //        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
 //            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
@@ -272,14 +277,23 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         miActionProgressItem.setVisible(false);
     }
 
-    public void onProfileView(MenuItem item) {
-        // Launch the profile view
-        Intent i = new Intent(this, ProfileActivity.class);
-        startActivity(i);
-    }
-
+//    public void onProfileView(MenuItem item) {
+//        // Launch the profile view
+//        Intent i = new Intent(this, ProfileActivity.class);
+//        startActivity(i);
+//    }
+//
     @Override
-    public void onTweetSelected(Tweet tweet) {
-        Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
+    public void onTweetSelected(Tweet tweet, int position) {
+//        Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
+        // Make sure the position is valid
+        if(position != RecyclerView.NO_POSITION) {
+            // Create an intent to the TweetDetailsActivity
+            Intent i = new Intent(this, TweetDetailsActivity.class);
+            i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+            i.putExtra(TWEET_POSITION_KEY, position);
+            // Start the activity
+            startActivityForResult(i, REQUEST_CODE_DETAILS);
+        }
     }
 }

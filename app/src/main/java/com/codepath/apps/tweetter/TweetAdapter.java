@@ -411,18 +411,20 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 int position = getAdapterPosition();
                 // Fire the listener callback
                 mListener.onItemSelected(v, position);
+
+//                // Make sure the position is valid
+//                if(position != RecyclerView.NO_POSITION) {
+//                    // Get the tweet at the location
+//                    Tweet tweet = mTweets.get(position);
+//                    // Create an intent to the TweetDetailsActivity
+//                    Intent i = new Intent(context, TweetDetailsActivity.class);
+//                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+//                    i.putExtra(TWEET_POSITION_KEY, position);
+//                    // Start the activity
+//                    ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
+//                }
             }
-//            // Make sure the position is valid
-//            if(position != RecyclerView.NO_POSITION) {
-//                // Get the tweet at the location
-//                Tweet tweet = mTweets.get(position);
-//                // Create an intent to the TweetDetailsActivity
-//                Intent i = new Intent(context, TweetDetailsActivity.class);
-//                i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-//                i.putExtra(TWEET_POSITION_KEY, position);
-//                // Start the activity
-//                ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
-//            }
+
         }
 
         public void setFavorited(Tweet tweet) {
