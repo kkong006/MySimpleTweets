@@ -2,6 +2,7 @@ package com.codepath.apps.tweetter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
@@ -9,6 +10,7 @@ import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -55,6 +57,15 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         // Setup the TabLayout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
         tabLayout.setupWithViewPager(vpPager);
+
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), ComposeActivity.class);
+                startActivityForResult(i, REQUEST_CODE_COMPOSE);
+            }
+        });
 
 //        client = TwitterApp.getRestClient();
 //        populateTimeline();
@@ -264,7 +275,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     public void onProfileView(MenuItem item) {
         // Launch the profile view
         Intent i = new Intent(this, ProfileActivity.class);
-
         startActivity(i);
     }
 

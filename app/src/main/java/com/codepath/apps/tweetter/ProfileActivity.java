@@ -61,7 +61,6 @@ public class ProfileActivity extends AppCompatActivity {
                     try {
                         User user = User.fromJSON(response);
                         // Set the title of the ActionBar based on the user info
-                        getSupportActionBar().setTitle(user.screenName);
                         Log.e("ProfileActivity", user.screenName);
                         // Populate the user headline
                         populateUserHeadline(user);
@@ -101,6 +100,8 @@ public class ProfileActivity extends AppCompatActivity {
         tvTagline.setText(user.tagLine);
         tvFollowers.setText(user.followersCount + " Followers");
         tvFollowing.setText(user.followingCount + " Following");
+
+        getSupportActionBar().setTitle(user.screenName);
 
         // Load profile image with Glide
         Glide.with(this).load(user.profileImageUrl).into(ivProfileImage);
