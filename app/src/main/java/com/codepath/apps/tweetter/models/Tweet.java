@@ -1,7 +1,5 @@
 package com.codepath.apps.tweetter.models;
 
-import android.util.Log;
-
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.parceler.Parcel;
@@ -52,12 +50,10 @@ public class Tweet {
         }
         try {
             this.media = new Media(jsonObject.getJSONObject("entities").getJSONArray("media"));
-            Log.e("TWEET", "Media URL: " + this.media.getMediaUrl());
         } catch(JSONException e) {
             e.printStackTrace();
             this.media = new Media();
         }
-        System.out.println("Here");
     }
 
     // Deserialize the JSON; the exceptions will be thrown back up to the caller
