@@ -52,13 +52,16 @@ The following **additional** features are implemented:
 
 Here's a walkthrough of implemented user stories:
 
-<img src='http://i.imgur.com/link/to/your/gif/file.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
+<img src='https://github.com/kkong006/Tweetter/blob/master/WalkthroughRequiredFunctionality.gif' title='Video Walkthrough - Requirements' width='' alt='Video Walkthrough' />
+
+Here's a walkthrough of optional and bonus features implemented:
+<img src='https://github.com/kkong006/Tweetter/blob/master/WalkthroughOptionalBonusFeatures.gif' title='Video Walkthrough - Optionals and Bonuses' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+The most challenging part was getting the correct count of retweets and likes to display at the appropriate time. Examining and correctly parsing the JSON responses into user defined objects also took some time.
 
 ## Open-source libraries used
 
