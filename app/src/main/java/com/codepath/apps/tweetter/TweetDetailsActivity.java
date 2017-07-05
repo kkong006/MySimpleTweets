@@ -25,7 +25,6 @@ import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
 import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
-import static com.codepath.apps.tweetter.TweetAdapter.context;
 
 public class TweetDetailsActivity extends AppCompatActivity {
 
@@ -66,13 +65,13 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvScreenName.setText("@" + tweet.user.screenName);
         tvTimeStamp.setText(TimeFormatter.getTimeStamp(tweet.getCreatedAt()));
         // Load the profile image
-        Glide.with(context)
+        Glide.with(this)
                 .load(tweet.user.profileImageUrl)
                 .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
                 .into(ivProfileImage);
 
         // Load the media image
-        Glide.with(context)
+        Glide.with(this)
                 .load(tweet.media.getMediaUrl())
                 .bitmapTransform(new RoundedCornersTransformation(this, 5, 0))
                 .into(ivMediaImage);
@@ -113,9 +112,9 @@ public class TweetDetailsActivity extends AppCompatActivity {
 
     @OnClick(R.id.ibMessageDetails)
     public void putReply() {
-        Intent i = new Intent(context, ReplyActivity.class);
+        Intent i = new Intent(this, ReplyActivity.class);
         i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-        ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_REPLY);
+        ((AppCompatActivity)this).startActivityForResult(i, REQUEST_CODE_REPLY);
     }
 
     @OnClick(R.id.ibRetweetDetails)
@@ -144,19 +143,19 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Unable to unretweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to unretweet", Toast.LENGTH_SHORT).show();
                 }
             });
         } else {
@@ -183,19 +182,19 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Unable to retweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Unable to retweet", Toast.LENGTH_SHORT).show();
                 }
             });
         }
@@ -226,19 +225,19 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
 
 
@@ -269,19 +268,19 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                     super.onFailure(statusCode, headers, throwable, errorResponse);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
 
                 @Override
                 public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                     super.onFailure(statusCode, headers, responseString, throwable);
-                    Toast.makeText(context, "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), "Failed to favorite tweet", Toast.LENGTH_SHORT).show();
                 }
             });
 

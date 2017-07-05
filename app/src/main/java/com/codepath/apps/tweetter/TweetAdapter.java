@@ -36,7 +36,7 @@ import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
 public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> {
 
     List<Tweet> mTweets;
-    static Context context;
+    Context context;
     TwitterClient client;
     LayoutInflater inflater;
     private TweetAdapterListener mListener;
