@@ -122,7 +122,7 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         // Load the profile image
         Glide.with(context)
                 .load(tweet.user.profileImageUrl)
-                .bitmapTransform(new RoundedCornersTransformation(context, 25, 0))
+                .bitmapTransform(new RoundedCornersTransformation(context, 150, 0))
                 .into(holder.ivProfileImage);
 
         Glide.with(context)
