@@ -40,6 +40,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //    ArrayList<Tweet> tweets;
 //    RecyclerView rvTweets;
     TweetsListFragment fragmentTweetsList;
+    TweetsPagerAdapter adapter;
+    ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,10 +53,12 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //        fragmentTweetsList = (TweetsListFragment) getSupportFragmentManager().findFragmentById(R.id.fragment_timeline);
 
         // Get the view pager
-        ViewPager vpPager = (ViewPager) findViewById(R.id.viewpager);
+        vpPager = (ViewPager) findViewById(R.id.viewpager);
+
+        adapter = new TweetsPagerAdapter(getSupportFragmentManager(), this);
 
         // Set the adapter for the pager
-        vpPager.setAdapter(new TweetsPagerAdapter(getSupportFragmentManager(), this));
+        vpPager.setAdapter(adapter);
 
         // Setup the TabLayout to use the view pager
         TabLayout tabLayout = (TabLayout) findViewById(R.id.sliding_tabs);
@@ -229,10 +233,19 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         }
     }
 
-//    @Override
-//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        super.onActivityResult(requestCode, resultCode, data);
-//
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
+            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
+            TweetsListFragment currentFragment = adapter.getRegisteredFragment(vpPager.getCurrentItem());
+            currentFragment.tweets.set(position, newTweet);
+            currentFragment.tweetAdapter.notifyItemChanged(position);
+            currentFragment.rvTweets.scrollToPosition(position);
+        }
+
 //        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
 //            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
 //            tweets.add(0, newTweet);
@@ -252,7 +265,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //        } else {
 //            Toast.makeText(this, "Unable to submit tweet", Toast.LENGTH_SHORT).show();
 //        }
-//    }
+    }
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {

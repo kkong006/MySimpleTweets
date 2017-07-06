@@ -125,19 +125,15 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        int oldRetweetCount = tweet.retweetCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(tweet.retweeted) {
-                            tweet.retweeted = false;
-                        }
-                        if(tweet.retweetCount > oldRetweetCount - 1) {
-                            tweet.retweetCount = oldRetweetCount - 1;
+                        Tweet newTweet = Tweet.fromJSON(response);
+                        tweet.retweeted = false;
+                        if(tweet.retweetCount > newTweet.retweetCount) {
+                            tweet.retweetCount = newTweet.retweetCount;
                         }
                         setRetweeted();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 @Override
@@ -164,19 +160,15 @@ public class TweetDetailsActivity extends AppCompatActivity {
                 public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                     super.onSuccess(statusCode, headers, response);
                     try {
-                        int oldRetweetCount = tweet.retweetCount;
-                        tweet = Tweet.fromJSON(response);
-                        if(!tweet.retweeted) {
-                            tweet.retweeted = true;
-                        }
-                        if(tweet.retweetCount < oldRetweetCount + 1) {
-                            tweet.retweetCount = oldRetweetCount + 1;
+                        Tweet newTweet = Tweet.fromJSON(response);
+                        tweet.retweeted = true;
+                        if(tweet.retweetCount < newTweet.retweetCount) {
+                            tweet.retweetCount = newTweet.retweetCount;
                         }
                         setRetweeted();
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
 
                 @Override
@@ -209,7 +201,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
                     super.onSuccess(statusCode, headers, response);
                     try {
                         int oldFavoriteCount = tweet.favoriteCount;
-                        tweet = Tweet.fromJSON(response);
+                        Tweet newTweet = Tweet.fromJSON(response);
                         if(tweet.favorited) {
                             tweet.favorited = false;
                         }
