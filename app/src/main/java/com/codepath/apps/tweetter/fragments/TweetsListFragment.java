@@ -52,10 +52,10 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         tweetAdapter = new TweetAdapter(tweets, this);
         // RecyclerView setup (layout manager, use adapter)
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+
         rvTweets.setLayoutManager(linearLayoutManager);
         // Set the adapter
         rvTweets.setAdapter(tweetAdapter);
-
 
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
@@ -102,7 +102,6 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     @Override
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
-
         ((TweetSelectedListener)getActivity()).onTweetSelected(tweet, position);
     }
 
@@ -117,7 +116,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         //  --> Send the request including an offset value (i.e `page`) as a query parameter.
         //  --> Deserialize and construct new model objects from the API response
         //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
 
     }
 }
