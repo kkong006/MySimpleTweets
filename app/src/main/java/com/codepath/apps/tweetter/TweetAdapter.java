@@ -15,6 +15,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.utilities.TimeFormatter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;

@@ -7,12 +7,15 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.view.MenuItemCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 import com.codepath.apps.tweetter.fragments.TweetsPagerAdapter;
@@ -47,6 +50,19 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_timeline);
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+        mTitleTextView.setText(getString(R.string.app_name));
+
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
 
 //        client = TwitterApp.getRestClient();
 
@@ -244,8 +260,13 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             currentFragment.tweets.set(position, newTweet);
             currentFragment.tweetAdapter.notifyItemChanged(position);
             currentFragment.rvTweets.scrollToPosition(position);
+        } else if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
+            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            TweetsListFragment currentFragment = adapter.getRegisteredFragment(vpPager.getCurrentItem());
+            currentFragment.tweets.set(0, newTweet);
+            currentFragment.tweetAdapter.notifyItemChanged(0);
+            currentFragment.rvTweets.scrollToPosition(0);
         }
-
 //        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
 //            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
 //            tweets.add(0, newTweet);

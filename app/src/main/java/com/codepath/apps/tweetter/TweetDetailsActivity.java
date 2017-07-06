@@ -2,13 +2,17 @@ package com.codepath.apps.tweetter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.utilities.TimeFormatter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -54,6 +58,18 @@ public class TweetDetailsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_tweet_details);
         ButterKnife.bind(this);
 
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+        mTitleTextView.setText("Details");
+
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
         client = TwitterApp.getRestClient();
 
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
@@ -67,7 +83,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         // Load the profile image
         Glide.with(this)
                 .load(tweet.user.profileImageUrl)
-                .bitmapTransform(new RoundedCornersTransformation(this, 25, 0))
+                .bitmapTransform(new RoundedCornersTransformation(this, 150, 0))
                 .into(ivProfileImage);
 
         // Load the media image

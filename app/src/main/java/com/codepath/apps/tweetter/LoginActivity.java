@@ -2,8 +2,11 @@ package com.codepath.apps.tweetter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
@@ -13,6 +16,18 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
+
+		ActionBar mActionBar = getSupportActionBar();
+		mActionBar.setDisplayShowHomeEnabled(false);
+		mActionBar.setDisplayShowTitleEnabled(false);
+		LayoutInflater mInflater = LayoutInflater.from(this);
+
+		View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+		TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+		mTitleTextView.setText(getString(R.string.app_name));
+
+		mActionBar.setCustomView(mCustomView);
+		mActionBar.setDisplayShowCustomEnabled(true);
 	}
 
 

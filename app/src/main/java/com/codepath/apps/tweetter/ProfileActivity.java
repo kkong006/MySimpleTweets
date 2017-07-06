@@ -3,9 +3,12 @@ package com.codepath.apps.tweetter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -14,6 +17,7 @@ import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 import com.codepath.apps.tweetter.fragments.UserTimelineFragment;
 import com.codepath.apps.tweetter.models.Tweet;
 import com.codepath.apps.tweetter.models.User;
+import com.codepath.apps.tweetter.utilities.FollowerCountFormatter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -30,7 +34,8 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
 
     TwitterClient client;
     Tweet tweet;
-    UserTimelineFragment userTimelineFragmentFragment;
+    UserTimelineFragment userTimelineFragment;
+    TextView mTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,14 +47,27 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
         if(tweet != null) {
             screenName = tweet.user.screenName;
         }
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+        mTitleTextView.setText(screenName);
+
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
+
         // Create the user fragment
-        userTimelineFragmentFragment = UserTimelineFragment.newInstance(screenName);
+        userTimelineFragment = UserTimelineFragment.newInstance(screenName);
         // Display the user timeline fragment inside the container (dynamically)
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
 
         // Make change
-        ft.replace(R.id.flContainer, userTimelineFragmentFragment);
+        ft.replace(R.id.flContainer, userTimelineFragment);
 
         // Commit transaction
         ft.commit();
@@ -105,15 +123,13 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
 
         tvName.setText(user.name);
         tvTagline.setText(user.tagLine);
-        tvFollowers.setText(user.followersCount + " Followers");
-        tvFollowing.setText(user.followingCount + " Following");
-
-        getSupportActionBar().setTitle(user.screenName);
+        tvFollowers.setText(FollowerCountFormatter.getFollowerCount(user.followersCount) + " Followers");
+        tvFollowing.setText(FollowerCountFormatter.getFollowerCount(user.followingCount) + " Following");
+        mTitleTextView.setText(user.screenName);
 
         // Load profile image with Glide
         Glide.with(this).load(user.profileImageUrl).into(ivProfileImage);
         Log.e("ProfileActivity", user.profileImageUrl);
-
     }
 
     @Override
@@ -131,13 +147,12 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
-            userTimelineFragmentFragment.tweets.set(position, newTweet);
-            userTimelineFragmentFragment.tweetAdapter.notifyItemChanged(position);
-            userTimelineFragmentFragment.rvTweets.scrollToPosition(position);
+            userTimelineFragment.tweets.set(position, newTweet);
+            userTimelineFragment.tweetAdapter.notifyItemChanged(position);
+            userTimelineFragment.rvTweets.scrollToPosition(position);
         }
     }
 }

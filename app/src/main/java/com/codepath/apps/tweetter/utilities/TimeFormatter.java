@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.utilities;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

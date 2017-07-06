@@ -29,7 +29,7 @@
                 android:layout_gravity="bottom|right"
                 android:layout_margin="@dimen/fab_margin"
                 android:src="@drawable/ic_compose"
-                app:backgroundTint="@color/colorPrimary"
+                app:backgroundTint="@color/colorTwitterLogoBlue"
                 app:layout_anchorGravity="bottom|right|end" />
         </android.support.design.widget.CoordinatorLayout>
 
