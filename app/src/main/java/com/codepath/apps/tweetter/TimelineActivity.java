@@ -40,8 +40,8 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 //    ArrayList<Tweet> tweets;
 //    RecyclerView rvTweets;
     TweetsListFragment fragmentTweetsList;
-    TweetsPagerAdapter adapter;
-    ViewPager vpPager;
+    public static TweetsPagerAdapter adapter;
+    public static ViewPager vpPager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

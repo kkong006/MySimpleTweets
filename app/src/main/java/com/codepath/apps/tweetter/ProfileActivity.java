@@ -1,13 +1,16 @@
 package com.codepath.apps.tweetter;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 import com.codepath.apps.tweetter.fragments.UserTimelineFragment;
 import com.codepath.apps.tweetter.models.Tweet;
 import com.codepath.apps.tweetter.models.User;
@@ -20,10 +23,14 @@ import org.parceler.Parcels;
 
 import cz.msebera.android.httpclient.Header;
 
-public class ProfileActivity extends AppCompatActivity {
+import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
+import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
+
+public class ProfileActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
 
     TwitterClient client;
     Tweet tweet;
+    UserTimelineFragment userTimelineFragmentFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,7 +43,7 @@ public class ProfileActivity extends AppCompatActivity {
             screenName = tweet.user.screenName;
         }
         // Create the user fragment
-        UserTimelineFragment userTimelineFragmentFragment = UserTimelineFragment.newInstance(screenName);
+        userTimelineFragmentFragment = UserTimelineFragment.newInstance(screenName);
         // Display the user timeline fragment inside the container (dynamically)
 
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
@@ -107,5 +114,30 @@ public class ProfileActivity extends AppCompatActivity {
         Glide.with(this).load(user.profileImageUrl).into(ivProfileImage);
         Log.e("ProfileActivity", user.profileImageUrl);
 
+    }
+
+    @Override
+    public void onTweetSelected(Tweet tweet, int position) {
+        if(position != RecyclerView.NO_POSITION) {
+            // Create an intent to the TweetDetailsActivity
+            Intent i = new Intent(this, TweetDetailsActivity.class);
+            i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
+            i.putExtra(TWEET_POSITION_KEY, position);
+            // Start the activity
+            startActivityForResult(i, REQUEST_CODE_DETAILS);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
+            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
+            userTimelineFragmentFragment.tweets.set(position, newTweet);
+            userTimelineFragmentFragment.tweetAdapter.notifyItemChanged(position);
+            userTimelineFragmentFragment.rvTweets.scrollToPosition(position);
+        }
     }
 }
