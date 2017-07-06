@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.codepath.apps.tweetter.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.TweetAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
@@ -33,6 +34,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     public TweetAdapter tweetAdapter;
     public ArrayList<Tweet> tweets;
     public RecyclerView rvTweets;
+    private EndlessRecyclerViewScrollListener scrollListener;
 
     public SwipeRefreshLayout swipeContainer;
     
@@ -49,9 +51,21 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         // Construct the adapter from this datasource
         tweetAdapter = new TweetAdapter(tweets, this);
         // RecyclerView setup (layout manager, use adapter)
-        rvTweets.setLayoutManager(new LinearLayoutManager((getContext())));
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getContext());
+        rvTweets.setLayoutManager(linearLayoutManager);
         // Set the adapter
         rvTweets.setAdapter(tweetAdapter);
+
+
+        scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
+            @Override
+            public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
+                Tweet lastTweet = tweets.get(tweets.size() - 1);
+                fetchNextPage(lastTweet.uid - 1);
+            }
+        };
+
+        rvTweets.addOnScrollListener(scrollListener);
 
         // Lookup the swipe container view
         swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
@@ -96,5 +110,14 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
 
     }
 
+    // Append the next page of data into the adapter
+    // This method probably sends out a network request and appends new data items to your adapter.
+    public void fetchNextPage(long max_id) {
+        // Send an API request to retrieve appropriate paginated data
+        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
+        //  --> Deserialize and construct new model objects from the API response
+        //  --> Append the new data objects to the existing set of items inside the array of items
+        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()`
 
+    }
 }
