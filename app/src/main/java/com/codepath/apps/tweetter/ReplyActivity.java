@@ -2,9 +2,11 @@ package com.codepath.apps.tweetter;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ public class ReplyActivity extends AppCompatActivity {
     private TwitterClient client;
     private Tweet tweet;
     final private int maxLength = 140;
+    TextView mTitleTextView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +37,18 @@ public class ReplyActivity extends AppCompatActivity {
 
         // Unwrap the intent
         tweet = (Tweet) Parcels.unwrap(getIntent().getParcelableExtra(Tweet.class.getSimpleName()));
+
+        ActionBar mActionBar = getSupportActionBar();
+        mActionBar.setDisplayShowHomeEnabled(false);
+        mActionBar.setDisplayShowTitleEnabled(false);
+        LayoutInflater mInflater = LayoutInflater.from(this);
+
+        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+        mTitleTextView.setText("Reply");
+
+        mActionBar.setCustomView(mCustomView);
+        mActionBar.setDisplayShowCustomEnabled(true);
 
         Button btSubmitReply = (Button) findViewById(R.id.btSubmitNewTweetReply);
         btSubmitReply.setOnClickListener(new View.OnClickListener() {
@@ -54,26 +69,26 @@ public class ReplyActivity extends AppCompatActivity {
                             startActivity(i);
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            Toast.makeText(ReplyActivity.this, "Failed to submit retweet", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(ReplyActivity.this, "Failed to submit reply", Toast.LENGTH_SHORT).show();
                         }
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Toast.makeText(ReplyActivity.this, "Failed to submit retweet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, "Failed to submit reply", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
                         super.onFailure(statusCode, headers, throwable, errorResponse);
-                        Toast.makeText(ReplyActivity.this, "Failed to submit retweet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, "Failed to submit reply", Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
                     public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                         super.onFailure(statusCode, headers, responseString, throwable);
-                        Toast.makeText(ReplyActivity.this, "Failed to submit retweet", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(ReplyActivity.this, "Failed to submit reply", Toast.LENGTH_SHORT).show();
                     }
                 });
             }

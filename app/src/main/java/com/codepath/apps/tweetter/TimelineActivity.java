@@ -1,5 +1,6 @@
 package com.codepath.apps.tweetter;
 
+import android.app.FragmentManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -17,13 +18,17 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.codepath.apps.tweetter.fragments.ComposeFragment;
+import com.codepath.apps.tweetter.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 import com.codepath.apps.tweetter.fragments.TweetsPagerAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
 
 import org.parceler.Parcels;
 
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.LoadingProgressDialog {
+//import android.support.v4.app.FragmentManager;
+
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.LoadingProgressDialog, ComposeFragment.ComposeDialogListener {
 
     private final int REQUEST_CODE_COMPOSE = 20;
     public static final int REQUEST_CODE_DETAILS = 30;
@@ -83,8 +88,9 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), ComposeActivity.class);
-                startActivityForResult(i, REQUEST_CODE_COMPOSE);
+                FragmentManager fragmentManager = getFragmentManager();
+                ComposeFragment composeFragment = ComposeFragment.newInstance();
+                composeFragment.show(fragmentManager, "fragment_compose");
             }
         });
 
@@ -263,7 +269,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             TweetsListFragment currentFragment = adapter.getRegisteredFragment(vpPager.getCurrentItem());
             currentFragment.tweets.set(0, newTweet);
-            currentFragment.tweetAdapter.notifyItemChanged(0);
+            currentFragment.tweetAdapter.notifyItemInserted(0);
             currentFragment.rvTweets.scrollToPosition(0);
         }
 //        if (resultCode == RESULT_OK && requestCode == REQUEST_CODE_COMPOSE) {
@@ -333,6 +339,16 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
             i.putExtra(TWEET_POSITION_KEY, position);
             // Start the activity
             startActivityForResult(i, REQUEST_CODE_DETAILS);
+        }
+    }
+
+    @Override
+    public void onFinishComposeDialog(Tweet tweet) {
+        TweetsListFragment currentFragment = adapter.getRegisteredFragment(vpPager.getCurrentItem());
+        if(currentFragment instanceof HomeTimelineFragment) {
+            currentFragment.tweets.set(0, tweet);
+            currentFragment.tweetAdapter.notifyItemInserted(0);
+            currentFragment.rvTweets.scrollToPosition(0);
         }
     }
 }
