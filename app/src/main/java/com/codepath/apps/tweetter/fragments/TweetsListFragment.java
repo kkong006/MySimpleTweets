@@ -31,6 +31,12 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         public void onTweetSelected(Tweet tweet, int position);
     }
 
+    public interface LoadingProgressDialog {
+        // Show/hide progress dialog
+        public void showProgressBar();
+        public void hideProgressBar();
+    }
+
     public TweetAdapter tweetAdapter;
     public ArrayList<Tweet> tweets;
     public RecyclerView rvTweets;
@@ -118,5 +124,13 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         //  --> Append the new data objects to the existing set of items inside the array of items
         //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
 
+    }
+
+    public void showProgressBar() {
+        ((LoadingProgressDialog)getActivity()).showProgressBar();
+    }
+
+    public void hideProgressBar() {
+        ((LoadingProgressDialog)getActivity()).hideProgressBar();
     }
 }

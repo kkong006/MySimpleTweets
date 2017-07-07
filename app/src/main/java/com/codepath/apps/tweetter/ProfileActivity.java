@@ -3,13 +3,17 @@ package com.codepath.apps.tweetter;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -30,12 +34,13 @@ import cz.msebera.android.httpclient.Header;
 import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_DETAILS;
 import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
 
-public class ProfileActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
+public class ProfileActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.LoadingProgressDialog {
 
     TwitterClient client;
     Tweet tweet;
     UserTimelineFragment userTimelineFragment;
     TextView mTitleTextView;
+    MenuItem miActionProgressItem;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -153,6 +158,45 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
             userTimelineFragment.tweets.set(position, newTweet);
             userTimelineFragment.tweetAdapter.notifyItemChanged(position);
             userTimelineFragment.rvTweets.scrollToPosition(position);
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu
+        getMenuInflater().inflate(R.menu.menu_profile, menu);
+        return true;
+    }
+//
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        // Store instance of the menu item containing progress
+        miActionProgressItem = menu.findItem(R.id.miActionProgressProfile);
+        // Extract the action-view from the menu item
+        ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
+        // Initialize the client and pull the data
+//        client = TwitterApp.getRestClient();
+//        populateTimeline();
+        // Return to finish
+        return super.onPrepareOptionsMenu(menu);
+    }
+
+
+    // TODO - Figure out why this is null
+
+    @Override
+    public void showProgressBar() {
+        // Show progress item
+        if(miActionProgressItem != null) {
+            miActionProgressItem.setVisible(true);
+        }
+    }
+
+    @Override
+    public void hideProgressBar() {
+        // Hide progress item
+        if(miActionProgressItem != null) {
+            miActionProgressItem.setVisible(false);
         }
     }
 }

@@ -23,7 +23,7 @@ import com.codepath.apps.tweetter.models.Tweet;
 
 import org.parceler.Parcels;
 
-public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener {
+public class TimelineActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.LoadingProgressDialog {
 
     private final int REQUEST_CODE_COMPOSE = 20;
     public static final int REQUEST_CODE_DETAILS = 30;
@@ -62,7 +62,6 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
-
 
 //        client = TwitterApp.getRestClient();
 
@@ -301,14 +300,20 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         return super.onPrepareOptionsMenu(menu);
     }
 //
+    @Override
     public void showProgressBar() {
         // Show progress item
-        miActionProgressItem.setVisible(true);
+        if(miActionProgressItem != null) {
+            miActionProgressItem.setVisible(true);
+        }
     }
 
+    @Override
     public void hideProgressBar() {
         // Hide progress item
-        miActionProgressItem.setVisible(false);
+        if(miActionProgressItem != null) {
+            miActionProgressItem.setVisible(false);
+        }
     }
 
 //    public void onProfileView(MenuItem item) {
