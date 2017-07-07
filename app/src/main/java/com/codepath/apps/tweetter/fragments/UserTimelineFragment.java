@@ -3,6 +3,7 @@ package com.codepath.apps.tweetter.fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.codepath.apps.tweetter.TwitterApp;
 import com.codepath.apps.tweetter.TwitterClient;
@@ -55,6 +56,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
                 hideProgressBar();
@@ -62,6 +64,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
                 hideProgressBar();
@@ -69,6 +72,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
                 hideProgressBar();
@@ -78,11 +82,14 @@ public class UserTimelineFragment extends TweetsListFragment {
 
     @Override
     public void fetchTimelineAsync(int page) {
+        showProgressBar();
         String screenName = getArguments().getString("screen_name");
         client.getUserTimeline(screenName, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 Log.d("TwitterClient", response.toString());
+                swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
 
             @Override
@@ -90,24 +97,34 @@ public class UserTimelineFragment extends TweetsListFragment {
                 tweetAdapter.clear();
                 addItems(response);
                 swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
+                swipeContainer.setRefreshing(false);
+                hideProgressBar();
             }
         });
     }
@@ -132,6 +149,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", responseString);
                 throwable.printStackTrace();
                 hideProgressBar();
@@ -139,6 +157,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
                 hideProgressBar();
@@ -146,6 +165,7 @@ public class UserTimelineFragment extends TweetsListFragment {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
+                Toast.makeText(getContext(), "Failed to get tweets", Toast.LENGTH_SHORT).show();
                 Log.d("TwitterClient", errorResponse.toString());
                 throwable.printStackTrace();
                 hideProgressBar();
