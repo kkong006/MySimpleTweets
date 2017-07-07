@@ -50,6 +50,9 @@ public class ReplyActivity extends AppCompatActivity {
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
 
+        TextView tvReplyingTo = (TextView) findViewById(R.id.tvReplyingTo);
+        tvReplyingTo.setText("Replying to @" + tweet.user.screenName);
+
         Button btSubmitReply = (Button) findViewById(R.id.btSubmitNewTweetReply);
         btSubmitReply.setOnClickListener(new View.OnClickListener() {
             @Override
