@@ -14,8 +14,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.codepath.apps.tweetter.activities.ProfileActivity;
 import com.codepath.apps.tweetter.R;
+import com.codepath.apps.tweetter.activities.ProfileActivity;
 import com.codepath.apps.tweetter.activities.ReplyActivity;
 import com.codepath.apps.tweetter.models.Tweet;
 import com.codepath.apps.tweetter.sync.TwitterApp;
@@ -135,11 +135,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 .load(tweet.media.getMediaUrl())
                 .bitmapTransform(new RoundedCornersTransformation(context, 5, 0))
                 .into(holder.ivMediaImage);
-
-//        // Remove the dividing line on the last row
-//        if(position == getItemCount() - 1) {
-//            holder.vDivider.setVisibility(View.INVISIBLE);
-//        }
     }
 
     @Override
@@ -177,6 +172,8 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
 
         public ViewHolder(View itemView) {
             super(itemView);
+            client = TwitterApp.getRestClient();
+
             // Perform findViewById lookups
             ivProfileImage = (ImageButton) itemView.findViewById(R.id.ivProfileImage);
             tvUsername = (TextView) itemView.findViewById(R.id.tvUserName);
@@ -193,17 +190,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             vDivider = (View) itemView.findViewById(R.id.vDivider);
 
             itemView.setOnClickListener(this);
-
-//            final TwitterClient client;
-            client = TwitterApp.getRestClient();
-
-//            // Handle row click event
-//            itemView.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//
-//                }
-//            });
 
             ibMessage.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -417,18 +403,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 int position = getAdapterPosition();
                 // Fire the listener callback
                 mListener.onItemSelected(v, position);
-
-//                // Make sure the position is valid
-//                if(position != RecyclerView.NO_POSITION) {
-//                    // Get the tweet at the location
-//                    Tweet tweet = mTweets.get(position);
-//                    // Create an intent to the TweetDetailsActivity
-//                    Intent i = new Intent(context, TweetDetailsActivity.class);
-//                    i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-//                    i.putExtra(TWEET_POSITION_KEY, position);
-//                    // Start the activity
-//                    ((AppCompatActivity)context).startActivityForResult(i, REQUEST_CODE_DETAILS);
-//                }
             }
 
         }
