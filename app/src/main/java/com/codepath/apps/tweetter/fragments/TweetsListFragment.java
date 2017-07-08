@@ -10,15 +10,19 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codepath.apps.tweetter.sync.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.adapters.TweetAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.sync.EndlessRecyclerViewScrollListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 
 /**
  * Created by kkong on 7/3/17.
@@ -28,30 +32,30 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
 
     public interface TweetSelectedListener {
         // Handle tweet selection
-        public void onTweetSelected(Tweet tweet, int position);
+        void onTweetSelected(Tweet tweet, int position);
     }
 
     public interface LoadingProgressDialog {
         // Show/hide progress dialog
-        public void showProgressBar();
-        public void hideProgressBar();
+        void showProgressBar();
+        void hideProgressBar();
     }
+
+    @BindView(R.id.rvTweets) public RecyclerView rvTweets;
+    private Unbinder unbinder;
 
     public TweetAdapter tweetAdapter;
     public ArrayList<Tweet> tweets;
-    public RecyclerView rvTweets;
-    private EndlessRecyclerViewScrollListener scrollListener;
-
     public SwipeRefreshLayout swipeContainer;
+    private EndlessRecyclerViewScrollListener scrollListener;
     
     // Inflation happens inside onCreateView
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragments_tweets_list, container, false);
+        View view = inflater.inflate(R.layout.fragments_tweets_list, container, false);
+        unbinder = ButterKnife.bind(this, view);
 
-        // Find the RecyclerView
-        rvTweets = (RecyclerView) v.findViewById(R.id.rvTweets);
         // Init the arraylist (data source)
         tweets = new ArrayList<>();
         // Construct the adapter from this datasource
@@ -63,6 +67,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         // Set the adapter
         rvTweets.setAdapter(tweetAdapter);
 
+        // Initialize the infinite pagination
         scrollListener = new EndlessRecyclerViewScrollListener(linearLayoutManager) {
             @Override
             public void onLoadMore(int page, int totalItemsCount, RecyclerView view) {
@@ -70,11 +75,10 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
                 fetchNextPage(lastTweet.uid - 1);
             }
         };
-
         rvTweets.addOnScrollListener(scrollListener);
 
         // Lookup the swipe container view
-        swipeContainer = (SwipeRefreshLayout) v.findViewById(R.id.swipeContainer);
+        swipeContainer = (SwipeRefreshLayout) view.findViewById(R.id.swipeContainer);
         // Setup refresh listener which triggers new data loading
         swipeContainer.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
@@ -90,7 +94,13 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
                 android.R.color.holo_orange_light,
                 android.R.color.holo_red_light);
 
-        return v;
+        return view;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 
     public void addItems(JSONArray response) {
@@ -105,12 +115,6 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         }
     }
 
-    @Override
-    public void onItemSelected(View view, int position) {
-        Tweet tweet = tweets.get(position);
-        ((TweetSelectedListener)getActivity()).onTweetSelected(tweet, position);
-    }
-
     public void fetchTimelineAsync(int page) { }
 
     // Append the next page of data into the adapter
@@ -122,5 +126,11 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
 
     public void hideProgressBar() {
         ((LoadingProgressDialog)getActivity()).hideProgressBar();
+    }
+
+    @Override
+    public void onItemSelected(View view, int position) {
+        Tweet tweet = tweets.get(position);
+        ((TweetSelectedListener)getActivity()).onTweetSelected(tweet, position);
     }
 }

@@ -22,7 +22,6 @@ import cz.msebera.android.httpclient.Header;
 public class SearchTweetsFragment extends TweetsListFragment {
 
     TwitterClient client;
-//    private String searchQuery;
 
     public static SearchTweetsFragment getInstance(String searchQuery) {
         SearchTweetsFragment searchTweetsFragment = new SearchTweetsFragment();
