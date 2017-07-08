@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#ffffff</color>
-    <color name="colorPrimaryDark">#d4d8d4</color>
+    <color name="colorPrimaryDark">#191a19</color>
     <color name="colorAccent">#00aced</color>
     <color name="colorTwitterLogoBlue">#00aced</color>
     <color name="colorTwitterDarkBlue">#0084b4</color>

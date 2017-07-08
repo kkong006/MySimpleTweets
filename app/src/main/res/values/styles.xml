@@ -6,6 +6,7 @@
             res/values-vXX/styles.xml, while customizations related to
             backward-compatibility can go here.
         -->
+        <item name="colorControlNormal">@color/colorTwitterLogoBlue</item>
     </style>
 
     <!-- Application theme. -->
@@ -14,6 +15,10 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:editTextColor">@color/colorTwitterLogoBlue</item>
+        <item name="android:textColorHint">@color/colorTwitterLogoBlue</item>
+        <item name="colorControlNormal">@color/colorTwitterLogoBlue</item>
+
         <!--<item name="android:titleTextStyle">@style/AppTheme.Actionbar.TitleTextStyle</item>-->
     </style>
 
