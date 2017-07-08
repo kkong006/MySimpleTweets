@@ -58,12 +58,10 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
         mListener = listener;
     }
 
-    // TODO: move intent from holder to TimelineActivity
     // Constructor for onclicklistener
     public TweetAdapter(Context context, AdapterView.OnItemClickListener listener, List<Tweet> tweets) {
         inflater = LayoutInflater.from(context);
         this.mTweets = tweets;
-//        this.onItemClickListener = listener;
     }
 
     // For each row, inflate layout and cache references into ViewHolder
@@ -394,19 +392,6 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
             });
         }
 
-        @Override
-        public void onClick(View v) {
-            // Get the item position
-
-            if(mListener != null) {
-                // Get the position of the row element
-                int position = getAdapterPosition();
-                // Fire the listener callback
-                mListener.onItemSelected(v, position);
-            }
-
-        }
-
         public void setFavorited(Tweet tweet) {
             // Set the tweet favorited status
             if(tweet.favorited) {
@@ -434,6 +419,16 @@ public class TweetAdapter extends RecyclerView.Adapter<TweetAdapter.ViewHolder> 
                 tvRetweetCount.setText(String.valueOf(tweet.retweetCount));
             } else {
                 tvRetweetCount.setText("");
+            }
+        }
+
+        @Override
+        public void onClick(View v) {
+            if(mListener != null) {
+                // Get the position of the row element
+                int position = getAdapterPosition();
+                // Fire the listener callback
+                mListener.onItemSelected(v, position);
             }
         }
     }

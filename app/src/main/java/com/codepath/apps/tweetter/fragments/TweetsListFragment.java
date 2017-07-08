@@ -84,7 +84,7 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
             }
         });
 
-//      Configure the refreshing colors
+        // Configure the refreshing colors
         swipeContainer.setColorSchemeResources(android.R.color.holo_blue_bright,
                 android.R.color.holo_green_light,
                 android.R.color.holo_orange_light,
@@ -111,20 +111,10 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         ((TweetSelectedListener)getActivity()).onTweetSelected(tweet, position);
     }
 
-    public void fetchTimelineAsync(int page) {
-
-    }
+    public void fetchTimelineAsync(int page) { }
 
     // Append the next page of data into the adapter
-    // This method probably sends out a network request and appends new data items to your adapter.
-    public void fetchNextPage(long max_id) {
-        // Send an API request to retrieve appropriate paginated data
-        //  --> Send the request including an offset value (i.e `page`) as a query parameter.
-        //  --> Deserialize and construct new model objects from the API response
-        //  --> Append the new data objects to the existing set of items inside the array of items
-        //  --> Notify the adapter of the new items made with `notifyItemRangeInserted()
-
-    }
+    public void fetchNextPage(long max_id) { }
 
     public void showProgressBar() {
         ((LoadingProgressDialog)getActivity()).showProgressBar();

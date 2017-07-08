@@ -22,7 +22,7 @@ import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.fragments.ComposeFragment;
 import com.codepath.apps.tweetter.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
-import com.codepath.apps.tweetter.fragments.TweetsPagerAdapter;
+import com.codepath.apps.tweetter.adapters.TweetsPagerAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
 
 import org.parceler.Parcels;

@@ -11,17 +11,15 @@ import org.parceler.Parcel;
 @Parcel
 public class User {
 
-    // List the attributes
     public String name;
     public long uid;
     public String screenName;
     public String profileImageUrl;
-
     public String tagLine;
     public int followersCount;
     public int followingCount;
 
-    public User() {}
+    public User() { }
 
     public User(JSONObject object) throws JSONException {
         this.name = object.getString("name");

@@ -85,7 +85,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         tvUserName.setText(tweet.user.name);
         tvTweetBody.setText(tweet.body);
         tvScreenName.setText("@" + tweet.user.screenName);
-        tvTimeStamp.setText(TimeFormatter.getTimeStamp(tweet.getCreatedAt()));
+        tvTimeStamp.setText(TimeFormatter.getTimeStamp(tweet.createdAt));
 
         // Load the profile image
         Glide.with(this)

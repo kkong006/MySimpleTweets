@@ -24,11 +24,14 @@ import com.loopj.android.http.RequestParams;
 public class TwitterClient extends OAuthBaseClient {
 	public static final BaseApi REST_API_INSTANCE = TwitterApi.instance(); // Change this
 	public static final String REST_URL = "https://api.twitter.com/1.1"; // Change this, base API URL
-	public static final String REST_CONSUMER_KEY = "eb8XyF71pTjpJjAK1j37OTEd3";       // Change this
-	public static final String REST_CONSUMER_SECRET = "HbgDnxhHuTXYKp4AKqD01tHbKV0iZ5s0bfSnEB13z37VQ8mP3S"; // Change this
 
-//    public static final String REST_CONSUMER_KEY = "kNXwaRVXlGImMgnFYfUYtu3Uj";       // Change this
-//    public static final String REST_CONSUMER_SECRET = "zHWKTMfMVHUTIQvQNhp2iQ0CAYWJlUbPrcOwfNnDTM7dBfLEmW"; // Change this
+	/* API Keys */
+	// API Key #1
+	public static final String REST_CONSUMER_KEY = "eb8XyF71pTjpJjAK1j37OTEd3";
+	public static final String REST_CONSUMER_SECRET = "HbgDnxhHuTXYKp4AKqD01tHbKV0iZ5s0bfSnEB13z37VQ8mP3S";
+	// API Key #2 - use if Key #1 reaches API request limit
+//    public static final String REST_CONSUMER_KEY = "kNXwaRVXlGImMgnFYfUYtu3Uj";
+//    public static final String REST_CONSUMER_SECRET = "zHWKTMfMVHUTIQvQNhp2iQ0CAYWJlUbPrcOwfNnDTM7dBfLEmW";
 
 	// Landing page to indicate the OAuth flow worked in case Chrome for Android 25+ blocks navigation back to the app.
 	public static final String FALLBACK_URL = "https://codepath.github.io/android-rest-client-template/success.html";
@@ -44,8 +47,16 @@ public class TwitterClient extends OAuthBaseClient {
 				String.format(REST_CALLBACK_URL_TEMPLATE, context.getString(R.string.intent_host),
 						context.getString(R.string.intent_scheme), context.getPackageName(), FALLBACK_URL));
 	}
-	// CHANGE THIS
-	// DEFINE METHODS for different API endpoints here
+
+	/* Methods for different API endpoints */
+	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
+	 * 	  i.e getApiUrl("statuses/home_timeline.json");
+	 * 2. Define the parameters to pass to the request (query or body)
+	 *    i.e RequestParams params = new RequestParams("foo", "bar");
+	 * 3. Define the request method and make a call to the client
+	 *    i.e client.get(apiUrl, params, handler);
+	 *    i.e client.post(apiUrl, params, handler);
+ 	*/
 	public void getHomeTimeline(int i, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
 		// Can specify query string params directly or through RequestParams.
@@ -57,7 +68,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getMentionsTimeline(int i, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", "25");
 		params.put("since_id", 1);
@@ -66,7 +76,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getHomeTimelinePage(long max_id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/home_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", "25");
 		params.put("max_id", max_id);
@@ -75,7 +84,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getMentionsTimelinePage(long max_id, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/mentions_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("count", "25");
 		params.put("max_id", max_id);
@@ -84,7 +92,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getUserTimeline(String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("screen_name", screenName);
 		params.put("count", "25");
@@ -94,7 +101,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void getUserTimelinePage(long max_id, String screenName, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/user_timeline.json");
-		// Can specify query string params directly or through RequestParams.
 		RequestParams params = new RequestParams();
 		params.put("screen_name", screenName);
 		params.put("count", "25");
@@ -117,7 +123,6 @@ public class TwitterClient extends OAuthBaseClient {
 
 	public void sendTweet(String message, AsyncHttpResponseHandler handler) {
 		String apiUrl = getApiUrl("statuses/update.json");
-		// Can specify query string params directly or through RequestParams
 		RequestParams params = new RequestParams();
 		params.put("status", message);
 		client.post(apiUrl, params, handler);
@@ -165,12 +170,4 @@ public class TwitterClient extends OAuthBaseClient {
 		params.put("q", searchQuery);
 		client.get(apiUrl, params, handler);
 	}
-	/* 1. Define the endpoint URL with getApiUrl and pass a relative path to the endpoint
-	 * 	  i.e getApiUrl("statuses/home_timeline.json");
-	 * 2. Define the parameters to pass to the request (query or body)
-	 *    i.e RequestParams params = new RequestParams("foo", "bar");
-	 * 3. Define the request method and make a call to the client
-	 *    i.e client.get(apiUrl, params, handler);
-	 *    i.e client.post(apiUrl, params, handler);
-	 */
 }

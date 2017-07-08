@@ -5,6 +5,7 @@ package com.codepath.apps.tweetter.utilities;
  */
 
 public class FollowerCountFormatter {
+    // Format count into condensed string
     public static String getFollowerCount(int followerCount) {
         String convertedCount = String.valueOf(followerCount);
         if((followerCount / 1000000000) > 0) {

@@ -60,20 +60,4 @@ public class Tweet {
     public static Tweet fromJSON(JSONObject jsonObject) throws JSONException {
         return new Tweet(jsonObject);
     }
-
-    public String getBody() {
-        return body;
-    }
-
-    public long getUid() {
-        return uid;
-    }
-
-    public User getUser() {
-        return user;
-    }
-
-    public String getCreatedAt() {
-        return createdAt;
-    }
 }

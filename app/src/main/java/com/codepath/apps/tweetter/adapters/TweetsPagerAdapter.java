@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter.fragments;
+package com.codepath.apps.tweetter.adapters;
 
 import android.content.Context;
 import android.support.v4.app.Fragment;
@@ -6,6 +6,10 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentStatePagerAdapter;
 import android.util.SparseArray;
 import android.view.ViewGroup;
+
+import com.codepath.apps.tweetter.fragments.HomeTimelineFragment;
+import com.codepath.apps.tweetter.fragments.MentionsTimelineFragment;
+import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 
 /**
  * Created by kkong on 7/3/17.
