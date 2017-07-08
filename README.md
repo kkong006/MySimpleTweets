@@ -47,13 +47,13 @@ The following **additional** features are implemented:
 
 ## Video Walkthrough
 
-#Required Functionality
+# Required Functionality
 <img src='https://github.com/kkong006/Tweetter/blob/master/WalkthroughRequiredFunctionality.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-#Optional Features
+# Optional Features
 <img src='https://github.com/kkong006/Tweetter/blob/master/WalkthroughOptionalFunctionality.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
-#Additional Features
+# Additional Features
 <img src='https://github.com/kkong006/Tweetter/blob/master/WalkthroughAdditionalFunctionality.gif' title='Video Walkthrough' width='' alt='Video Walkthrough' />
 
 GIF created with [LiceCap](http://www.cockos.com/licecap/).
