@@ -116,8 +116,8 @@ public class ProfileActivity extends AppCompatActivity implements TweetsListFrag
         client.getUserInfo(new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                // Deserialize the user object
                 try {
+                    // Deserialize the user object
                     User user = User.fromJSON(response);
                     // Populate the user headline
                     populateUserHeadline(user);

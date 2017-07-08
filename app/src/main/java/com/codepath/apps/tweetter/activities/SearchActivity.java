@@ -51,7 +51,7 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
 
         View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
         mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
-        mTitleTextView.setText("Search: " +searchQuery);
+        mTitleTextView.setText("Search: " + searchQuery);
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
