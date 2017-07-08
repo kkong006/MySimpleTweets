@@ -1,7 +1,8 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.sync;
 
 import android.content.Context;
 
+import com.codepath.apps.tweetter.R;
 import com.codepath.oauth.OAuthBaseClient;
 import com.github.scribejava.apis.TwitterApi;
 import com.github.scribejava.core.builder.api.BaseApi;

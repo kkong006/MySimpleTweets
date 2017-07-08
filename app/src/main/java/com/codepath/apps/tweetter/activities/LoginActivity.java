@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -8,6 +8,8 @@ import android.view.Menu;
 import android.view.View;
 import android.widget.TextView;
 
+import com.codepath.apps.tweetter.R;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.codepath.oauth.OAuthLoginActionBarActivity;
 
 public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
@@ -17,12 +19,13 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_login);
 
+		// Custom Actionbar Setup
 		ActionBar mActionBar = getSupportActionBar();
 		mActionBar.setDisplayShowHomeEnabled(false);
 		mActionBar.setDisplayShowTitleEnabled(false);
 		LayoutInflater mInflater = LayoutInflater.from(this);
 
-		View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+		View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
 		TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
 		mTitleTextView.setText(getString(R.string.app_name));
 
@@ -42,7 +45,6 @@ public class LoginActivity extends OAuthLoginActionBarActivity<TwitterClient> {
 	// i.e Display application "homepage"
 	@Override
 	public void onLoginSuccess() {
-//		Toast.makeText(this, "Success", Toast.LENGTH_LONG).show();
 		 Intent i = new Intent(this, TimelineActivity.class);
 		 startActivity(i);
 	}

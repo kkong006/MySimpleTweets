@@ -10,9 +10,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.codepath.apps.tweetter.EndlessRecyclerViewScrollListener;
+import com.codepath.apps.tweetter.sync.EndlessRecyclerViewScrollListener;
 import com.codepath.apps.tweetter.R;
-import com.codepath.apps.tweetter.TweetAdapter;
+import com.codepath.apps.tweetter.adapters.TweetAdapter;
 import com.codepath.apps.tweetter.models.Tweet;
 
 import org.json.JSONArray;

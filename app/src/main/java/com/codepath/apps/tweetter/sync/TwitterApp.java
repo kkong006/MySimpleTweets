@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.sync;
 
 import android.app.Application;
 import android.content.Context;

@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,7 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.sync.TwitterApp;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;
@@ -43,7 +46,7 @@ public class ReplyActivity extends AppCompatActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
         mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
         mTitleTextView.setText("Reply");
 

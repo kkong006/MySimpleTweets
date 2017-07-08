@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.activities;
 
 import android.app.FragmentManager;
 import android.content.Intent;
@@ -20,6 +20,7 @@ import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
+import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.fragments.ComposeFragment;
 import com.codepath.apps.tweetter.fragments.HomeTimelineFragment;
 import com.codepath.apps.tweetter.fragments.TweetsListFragment;
@@ -63,7 +64,7 @@ public class TimelineActivity extends AppCompatActivity implements TweetsListFra
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
         mTitleTextView.setText(getString(R.string.app_name));
 

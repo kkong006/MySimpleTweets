@@ -5,8 +5,8 @@ import android.support.annotation.Nullable;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.codepath.apps.tweetter.TwitterApp;
-import com.codepath.apps.tweetter.TwitterClient;
+import com.codepath.apps.tweetter.sync.TwitterApp;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
 import org.json.JSONArray;

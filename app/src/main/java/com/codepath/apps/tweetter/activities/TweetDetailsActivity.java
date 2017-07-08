@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.activities;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -11,7 +11,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.tweetter.R;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.sync.TwitterApp;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.codepath.apps.tweetter.utilities.TimeFormatter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -27,8 +30,8 @@ import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
 import static com.codepath.apps.tweetter.R.id.ibFavoriteDetails;
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
-import static com.codepath.apps.tweetter.TimelineActivity.TWEET_POSITION_KEY;
+import static com.codepath.apps.tweetter.activities.TimelineActivity.REQUEST_CODE_REPLY;
+import static com.codepath.apps.tweetter.activities.TimelineActivity.TWEET_POSITION_KEY;
 
 public class TweetDetailsActivity extends AppCompatActivity {
 
@@ -63,7 +66,7 @@ public class TweetDetailsActivity extends AppCompatActivity {
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
-        View mCustomView = mInflater.inflate(R.layout.custom_actionbar, null);
+        View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
         TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
         mTitleTextView.setText("Details");
 

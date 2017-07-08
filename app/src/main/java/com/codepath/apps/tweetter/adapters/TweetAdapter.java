@@ -1,4 +1,4 @@
-package com.codepath.apps.tweetter;
+package com.codepath.apps.tweetter.adapters;
 
 import android.content.Context;
 import android.content.Intent;
@@ -14,7 +14,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.codepath.apps.tweetter.activities.ProfileActivity;
+import com.codepath.apps.tweetter.R;
+import com.codepath.apps.tweetter.activities.ReplyActivity;
 import com.codepath.apps.tweetter.models.Tweet;
+import com.codepath.apps.tweetter.sync.TwitterApp;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.codepath.apps.tweetter.utilities.TimeFormatter;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -28,7 +33,7 @@ import java.util.List;
 import cz.msebera.android.httpclient.Header;
 import jp.wasabeef.glide.transformations.RoundedCornersTransformation;
 
-import static com.codepath.apps.tweetter.TimelineActivity.REQUEST_CODE_REPLY;
+import static com.codepath.apps.tweetter.activities.TimelineActivity.REQUEST_CODE_REPLY;
 
 /**
  * Created by kkong on 6/26/17.

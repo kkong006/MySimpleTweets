@@ -41,7 +41,7 @@
     <!--xmlns:tools="http://schemas.android.com/tools"-->
     <!--android:layout_width="match_parent"-->
     <!--android:layout_height="match_parent"-->
-    <!--tools:context="com.codepath.apps.tweetter.TimelineActivity">-->
+    <!--tools:context="com.codepath.apps.tweetter.timeline.TimelineActivity">-->
 
     <!--&lt;!&ndash;<include layout="@menu/menu_main" />&ndash;&gt;-->
     <!--&lt;!&ndash;<android.support.v4.widget.SwipeRefreshLayout&ndash;&gt;-->
@@ -61,7 +61,7 @@
         <!--android:id="@+id/fragment_timeline"-->
         <!--android:layout_width="match_parent"-->
         <!--android:layout_height="match_parent"-->
-        <!--class="com.codepath.apps.tweetter.fragments.HomeTimelineFragment" />-->
+        <!--class="com.codepath.apps.tweetter.timeline.HomeTimelineFragment" />-->
 
 <!--</RelativeLayout>-->
 

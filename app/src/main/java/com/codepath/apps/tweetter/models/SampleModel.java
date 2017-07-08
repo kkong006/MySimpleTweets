@@ -1,6 +1,6 @@
 package com.codepath.apps.tweetter.models;
 
-import com.codepath.apps.tweetter.MyDatabase;
+import com.codepath.apps.tweetter.data.MyDatabase;
 import com.raizlabs.android.dbflow.annotation.Column;
 import com.raizlabs.android.dbflow.annotation.PrimaryKey;
 import com.raizlabs.android.dbflow.annotation.Table;

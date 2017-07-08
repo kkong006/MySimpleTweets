@@ -15,8 +15,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.codepath.apps.tweetter.R;
-import com.codepath.apps.tweetter.TwitterApp;
-import com.codepath.apps.tweetter.TwitterClient;
+import com.codepath.apps.tweetter.sync.TwitterApp;
+import com.codepath.apps.tweetter.sync.TwitterClient;
 import com.codepath.apps.tweetter.models.Tweet;
 import com.loopj.android.http.JsonHttpResponseHandler;
 
@@ -38,12 +38,11 @@ public class ComposeFragment extends DialogFragment {
     private TwitterClient client;
 
     public interface ComposeDialogListener {
-        public void onFinishComposeDialog(Tweet tweet);
+        void onFinishComposeDialog(Tweet tweet);
     }
 
     // Empty constructor required for DialogFragment
-    public ComposeFragment() {
-    }
+    public ComposeFragment() { }
 
     public static ComposeFragment newInstance() {
         ComposeFragment composeFragment = new ComposeFragment();
@@ -66,7 +65,6 @@ public class ComposeFragment extends DialogFragment {
         Button btTweetCompose = (Button) view.findViewById(R.id.btSubmitNewTweet);
 
         final TextView tvCharacterCount = (TextView) view.findViewById(R.id.tvCharacterCount);
-//        EditText etNewTweet = (EditText) view.findViewById(R.id.etNewTweet);
         mTweetText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -169,88 +167,4 @@ public class ComposeFragment extends DialogFragment {
             }
         });
     }
-
-//    @Override
-//    public void onClick(View v) {
-//        Toast.makeText(getActivity(), "Submitting tweet", Toast.LENGTH_SHORT).show();
-//        if(v.getId() == R.id.btSubmitNewTweet) {
-//            Toast.makeText(getActivity(), "Submitting tweet", Toast.LENGTH_SHORT).show();
-//            EditText etNewTweet = (EditText) v.findViewById(R.id.etNewTweet);
-//            String newTweetText = etNewTweet.getText().toString();
-//            client.sendTweet(newTweetText, new JsonHttpResponseHandler() {
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-//                    super.onSuccess(statusCode, headers, response);
-//                    try {
-//                        // Get the tweet
-//                        tweet = Tweet.fromJSON(response);
-//                        // Make the intent
-////                            Intent i = new Intent(ComposeActivity.this, TimelineActivity.class);
-////                            i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-////                            setResult(RESULT_OK, i);
-////                            finish();
-//                        ComposeDialogListener listener = (ComposeDialogListener) getActivity();
-//                        listener.onFinishComposeDialog(tweet);
-//                        // Close the dialog and return back to the parent activity
-//                        dismiss();
-//
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-//                    }
-//                    dismiss();
-//                }
-//
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
-//                    super.onSuccess(statusCode, headers, response);
-//                    try {
-//                        for(int i = 0;  i < response.length(); i++) {
-//                            tweet = Tweet.fromJSON(response.getJSONObject(i));
-////                                Intent intent = new Intent(ComposeActivity.this, TimelineActivity.class);
-////                                intent.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
-////                                setResult(RESULT_OK, intent);
-////                                finish();
-//                        }
-//                    } catch (JSONException e) {
-//                        e.printStackTrace();
-////                            Toast.makeText(ComposeActivity.this, "Failed to submit tweet", Toast.LENGTH_SHORT).show();
-//                    }
-//                    dismiss();
-//                }
-//
-//                @Override
-//                public void onSuccess(int statusCode, Header[] headers, String responseString) {
-//                    super.onSuccess(statusCode, headers, responseString);
-//                    dismiss();
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-//                    throwable.printStackTrace();
-//                    Toast.makeText(getActivity(), "Failed to submit tweet", Toast.LENGTH_SHORT).show();
-//                    dismiss();
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-//                    throwable.printStackTrace();
-//                    Toast.makeText(getActivity(), "Failed to submit tweet", Toast.LENGTH_SHORT).show();
-//                    dismiss();
-//                }
-//
-//                @Override
-//                public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONArray errorResponse) {
-//                    throwable.printStackTrace();
-//                    Toast.makeText(getActivity(), "Failed to submit tweet", Toast.LENGTH_SHORT).show();
-//                    dismiss();
-//                }
-//            });
-//        }
-//    }
-
-//    @Override
-//    public void onClick(View v) {
-////        Toast.makeText(getActivity(), v.getId() + "", Toast.LENGTH_SHORT).show();
-//        Log.e("COMPOSE FRAGMENT", v.getId() + "");
-//    }
 }
