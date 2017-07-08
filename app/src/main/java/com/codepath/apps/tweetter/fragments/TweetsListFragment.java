@@ -97,12 +97,6 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
         return view;
     }
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unbinder.unbind();
-    }
-
     public void addItems(JSONArray response) {
         try {
             for(int i = 0; i < response.length(); i++) {
@@ -132,5 +126,11 @@ public class TweetsListFragment extends Fragment implements TweetAdapter.TweetAd
     public void onItemSelected(View view, int position) {
         Tweet tweet = tweets.get(position);
         ((TweetSelectedListener)getActivity()).onTweetSelected(tweet, position);
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unbinder.unbind();
     }
 }

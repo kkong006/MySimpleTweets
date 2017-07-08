@@ -18,7 +18,6 @@ import com.codepath.apps.tweetter.fragments.TweetsListFragment;
 public class TweetsPagerAdapter extends FragmentStatePagerAdapter {
 
     SparseArray<TweetsListFragment> registeredFragments = new SparseArray<TweetsListFragment>();
-
     private String tabTitles[] = new String[] {"Home", "Mentions"};
     private Context context;
 

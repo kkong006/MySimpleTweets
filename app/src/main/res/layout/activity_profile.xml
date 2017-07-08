@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.tweetter.profile.ProfileActivity">
+    tools:context="com.codepath.apps.tweetter.activities.ProfileActivity">
 
     <RelativeLayout
         android:id="@+id/rlUserHeader"
@@ -67,4 +67,5 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/llCounts">
     </FrameLayout>
+
 </RelativeLayout>

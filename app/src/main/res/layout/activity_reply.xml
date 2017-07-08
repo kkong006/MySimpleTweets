@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.codepath.apps.tweetter.compose.ComposeActivity">
+    tools:context="com.codepath.apps.tweetter.activities.ReplyActivity">
 
     <TextView
         android:id="@+id/tvReplyingTo"
@@ -73,6 +73,7 @@
             android:textColor="@android:color/white"
             android:textAllCaps="false"
             android:text="Reply" />
+
     </LinearLayout>
 
 </RelativeLayout>

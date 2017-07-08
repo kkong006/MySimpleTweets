@@ -35,33 +35,3 @@
 
 </LinearLayout>
 
-<!--<?xml version="1.0" encoding="utf-8"?>-->
-<!--<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
-    <!--xmlns:app="http://schemas.android.com/apk/res-auto"-->
-    <!--xmlns:tools="http://schemas.android.com/tools"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="match_parent"-->
-    <!--tools:context="com.codepath.apps.tweetter.timeline.TimelineActivity">-->
-
-    <!--&lt;!&ndash;<include layout="@menu/menu_main" />&ndash;&gt;-->
-    <!--&lt;!&ndash;<android.support.v4.widget.SwipeRefreshLayout&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/swipeContainer"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="match_parent">&ndash;&gt;-->
-
-        <!--&lt;!&ndash;<android.support.v7.widget.RecyclerView&ndash;&gt;-->
-            <!--&lt;!&ndash;android:id="@+id/rvTweets"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_height="match_parent"&ndash;&gt;-->
-            <!--&lt;!&ndash;android:layout_margin="5dp"/>&ndash;&gt;-->
-
-    <!--&lt;!&ndash;</android.support.v4.widget.SwipeRefreshLayout>&ndash;&gt;-->
-
-    <!--<fragment-->
-        <!--android:id="@+id/fragment_timeline"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--class="com.codepath.apps.tweetter.timeline.HomeTimelineFragment" />-->
-
-<!--</RelativeLayout>-->
-

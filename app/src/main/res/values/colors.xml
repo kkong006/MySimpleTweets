@@ -10,7 +10,6 @@
     <color name="colorTwitterWhite">#ffffff</color>
     <color name="colorTwitterOffWhite">#d4d8d4</color>
 
-    <!--Copied from the day 3 lab-->
     <color name="colorLoginBlue">#5bc1e7</color>
     <color name="colorStreamBlue">#159CEB</color>
     <color name="colorTransparentBackground">#803f3f3f</color>
