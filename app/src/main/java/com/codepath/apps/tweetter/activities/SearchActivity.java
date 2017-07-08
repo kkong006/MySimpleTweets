@@ -24,6 +24,8 @@ import com.codepath.apps.tweetter.sync.TwitterClient;
 
 import org.parceler.Parcels;
 
+import butterknife.ButterKnife;
+
 import static com.codepath.apps.tweetter.activities.TimelineActivity.REQUEST_CODE_DETAILS;
 import static com.codepath.apps.tweetter.activities.TimelineActivity.TWEET_POSITION_KEY;
 import static com.codepath.apps.tweetter.activities.TimelineActivity.adapter;
@@ -31,7 +33,6 @@ import static com.codepath.apps.tweetter.activities.TimelineActivity.vpPager;
 
 public class SearchActivity extends AppCompatActivity implements TweetsListFragment.TweetSelectedListener, TweetsListFragment.LoadingProgressDialog{
 
-    TextView mTitleTextView;
     MenuItem miActionProgressItem;
     String searchQuery;
     SearchTweetsFragment searchFragment;
@@ -41,36 +42,38 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
+        ButterKnife.bind(this);
+        client = TwitterApp.getRestClient();
 
+        // Fetch the search query entered in the search bar
         searchQuery = getIntent().getStringExtra("search_query");
 
+        // Set up the action bar
         ActionBar mActionBar = getSupportActionBar();
         mActionBar.setDisplayShowHomeEnabled(false);
         mActionBar.setDisplayShowTitleEnabled(false);
         LayoutInflater mInflater = LayoutInflater.from(this);
 
         View mCustomView = mInflater.inflate(R.layout.actionbar_custom, null);
-        mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
+        TextView mTitleTextView = (TextView) mCustomView.findViewById(R.id.actionbar_title);
         mTitleTextView.setText("Search: " + searchQuery);
 
         mActionBar.setCustomView(mCustomView);
         mActionBar.setDisplayShowCustomEnabled(true);
 
+        // Inflate the fragment
         searchFragment = SearchTweetsFragment.getInstance(searchQuery);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
         ft.replace(R.id.flContainerSearch, searchFragment);
         ft.commit();
-
-        client = TwitterApp.getRestClient();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.menu_search, menu);
-        return true;
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -79,16 +82,11 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
         miActionProgressItem = menu.findItem(R.id.miActionProgress);
         // Extract the action-view from the menu item
         ProgressBar v = (ProgressBar) MenuItemCompat.getActionView(miActionProgressItem);
-        // Initialize the client and pull the data
-//        client = TwitterApp.getRestClient();
-//        populateTimeline();
-        // Return to finish
         return super.onPrepareOptionsMenu(menu);
     }
 
     @Override
     public void showProgressBar() {
-        // Show progress item
         if(miActionProgressItem != null) {
             miActionProgressItem.setVisible(true);
         }
@@ -96,7 +94,6 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
 
     @Override
     public void hideProgressBar() {
-        // Hide progress item
         if(miActionProgressItem != null) {
             miActionProgressItem.setVisible(false);
         }
@@ -104,14 +101,11 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
 
     @Override
     public void onTweetSelected(Tweet tweet, int position) {
-//        Toast.makeText(this, tweet.body, Toast.LENGTH_SHORT).show();
-        // Make sure the position is valid
         if(position != RecyclerView.NO_POSITION) {
-            // Create an intent to the TweetDetailsActivity
+            // Create an intent to the TweetDetailsActivity with the tweet
             Intent i = new Intent(this, TweetDetailsActivity.class);
             i.putExtra(Tweet.class.getSimpleName(), Parcels.wrap(tweet));
             i.putExtra(TWEET_POSITION_KEY, position);
-            // Start the activity
             startActivityForResult(i, REQUEST_CODE_DETAILS);
         }
     }
@@ -119,9 +113,12 @@ public class SearchActivity extends AppCompatActivity implements TweetsListFragm
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        // If returning successfully from DetailsActivity
         if(resultCode == RESULT_OK && requestCode == REQUEST_CODE_DETAILS) {
-            Tweet newTweet = (Tweet) Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
+            // Deserialize the tweet and its position
+            Tweet newTweet = Parcels.unwrap(data.getParcelableExtra(Tweet.class.getSimpleName()));
             int position = data.getIntExtra(TWEET_POSITION_KEY, 0);
+            // Update the tweet in the search result list and notify the adapter
             TweetsListFragment currentFragment = adapter.getRegisteredFragment(vpPager.getCurrentItem());
             currentFragment.tweets.set(position, newTweet);
             currentFragment.tweetAdapter.notifyItemChanged(position);

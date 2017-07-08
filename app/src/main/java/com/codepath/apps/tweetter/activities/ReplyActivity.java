@@ -34,7 +34,6 @@ public class ReplyActivity extends AppCompatActivity {
     @BindView(R.id.tvCharacterCountReply) TextView tvCharacterCount;
     @BindView(R.id.etNewTweetReply) EditText etNewTweet;
 
-
     private TwitterClient client;
     private Tweet tweet;
     final private int maxLength = 140;
